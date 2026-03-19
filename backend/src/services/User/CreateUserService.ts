@@ -28,10 +28,18 @@ import prismaClient from "../../prisma";
             name: name,
             email: email,
             password: hashpassword
+         },
+         select: {
+            id: true,
+            name: true,
+            email: true,
+            role: true,
+            createdAt: true
+
          }
         })
 
-        return user.name
+        return user
     }
  }
 
