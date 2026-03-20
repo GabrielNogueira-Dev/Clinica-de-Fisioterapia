@@ -2,6 +2,7 @@
 import { compare } from "bcryptjs";
 
 import { sign } from "jsonwebtoken";
+import { success } from "zod";
 
 interface UserLoginProps{
     email: string;
@@ -18,13 +19,13 @@ interface UserLoginProps{
             }
         })
         if(!user){
-            throw new Error("Email/Password obrigatório(a)")
+              return {success:false, message:"Email/Password obrigatório(a)"}
         }
 
         const passwordMatch = await compare(password, user.password)
 
         if(!passwordMatch){
-            throw new Error("Email/Password incorreto(a)")
+            return {success:false, message:"Email/Password incorreto(a)"}
         }
 
         //Gerar o token abaixo
