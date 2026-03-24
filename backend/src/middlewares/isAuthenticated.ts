@@ -13,9 +13,9 @@ export function isAuthenticated(req:Request, res:Response, next:NextFunction){
         return res.status(401).json({error: "Não possui TOKEN"})
     }
 
-    const [, token] = authToken.split(" ") 
+    const [, token] = authToken.split(" ") //Aqui ta o TOKEN do user
 
-       try{
+       try{ //Valida o Token e monstra qual id do usuario que possui este TOKEN com este JWT
         const {sub} = verify(token!, process.env.JWT_SECRET as string) as PayLoad
     
             req.user_id = sub

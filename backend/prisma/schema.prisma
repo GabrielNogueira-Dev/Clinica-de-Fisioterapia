@@ -56,9 +56,10 @@ model Professional {
 //SE O SERVICO E X OU Y E SUA FOTO
 model ServiceType {
   id        String    @id @default(uuid())
-  type      AppointmentType @unique
+  type      AppointmentType? @unique
   name      String
-  banner    String
+  banner    String?
+  createdAt DateTime @default(now())
 
   appointments Appointment[]
 }

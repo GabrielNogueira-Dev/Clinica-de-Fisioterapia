@@ -2,7 +2,6 @@
 import { compare } from "bcryptjs";
 
 import { sign } from "jsonwebtoken";
-import { success } from "zod";
 
 interface UserLoginProps{
     email: string;

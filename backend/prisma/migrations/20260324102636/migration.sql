@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "ServiceType" ALTER COLUMN "type" DROP NOT NULL,
+ALTER COLUMN "banner" DROP NOT NULL;
