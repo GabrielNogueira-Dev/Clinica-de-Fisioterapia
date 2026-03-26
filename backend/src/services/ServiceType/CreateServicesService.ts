@@ -1,12 +1,11 @@
 
-import { success } from "zod";
 import prismaClient from "../../prisma";
 
 import { ServiceTypeProps } from "../../types/Tipagens";
 
 
 
-class ServiceTypeService{
+class CreateServiceTypeService{
     async execute({name}:ServiceTypeProps){
         try{
             const exists = await prismaClient.serviceType.findFirst({
@@ -36,4 +35,4 @@ class ServiceTypeService{
     }
 }
 
-export {ServiceTypeService}
+export {CreateServiceTypeService}

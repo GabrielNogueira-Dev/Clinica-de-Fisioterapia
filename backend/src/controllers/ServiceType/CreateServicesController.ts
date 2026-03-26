@@ -1,12 +1,12 @@
 import { Request,Response, } from "express";
-import { ServiceTypeService } from "../../services/ServiceType/ServicesService";
+import { CreateServiceTypeService } from "../../services/ServiceType/CreateServicesService";
 
 
 class ServicesController{
     async handle(req:Request, res:Response){
         const {name} = req.body
 
-        const servicesTypeService = new ServiceTypeService()
+        const servicesTypeService = new CreateServiceTypeService()
         
         const service = await servicesTypeService.execute({name:name})
 

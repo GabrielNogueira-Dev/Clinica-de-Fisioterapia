@@ -8,6 +8,7 @@ import { isAuthenticated } from "./middlewares/isAuthenticated";
 import { ServicesController } from "./controllers/ServiceType/ServicesController";
 import { isAdmin } from "./middlewares/isAdmin";
 import { createServiceTypeSchema } from "./schemas/serviceSchema";
+import { ListServicesController } from "./controllers/ServiceType/ListServicesController";
 
 
 const router = Router()
@@ -18,6 +19,8 @@ router.post("/session", validateSchema(loginUserSchema), new LoginUserController
 
 router.get("/me", isAuthenticated, new DetailUserController().handle)
 
-router.post("/servicetype", isAuthenticated, isAdmin, validateSchema(createServiceTypeSchema), new ServicesController().handle)
+router.post("/serviceType", isAuthenticated, isAdmin, validateSchema(createServiceTypeSchema), new ServicesController().handle)
+
+router.get("/serviceType", isAuthenticated, new ListServicesController().handle)
 
 export { router }
