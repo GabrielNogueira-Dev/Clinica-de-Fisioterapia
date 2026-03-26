@@ -6,6 +6,7 @@ import { LoginUserController } from "./controllers/User/LoginUserController";
 import { DetailUserController } from "./controllers/User/DetailUserController";
 import { isAuthenticated } from "./middlewares/isAuthenticated";
 import { ServicesController } from "./controllers/ServiceType/ServicesController";
+import { isAdmin } from "./middlewares/isAdmin";
 
 
 const router = Router()
@@ -16,6 +17,6 @@ router.post("/session", validateSchema(loginUserSchema), new LoginUserController
 
 router.get("/me", isAuthenticated, new DetailUserController().handle)
 
-router.post("/servicetype", isAuthenticated, new ServicesController().handle)
+router.post("/servicetype", isAuthenticated, isAdmin, new ServicesController().handle)
 
 export { router }

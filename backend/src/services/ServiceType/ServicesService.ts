@@ -1,4 +1,5 @@
 
+import { success } from "zod";
 import prismaClient from "../../prisma";
 
 import { ServiceTypeProps } from "../../types/Tipagens";
@@ -8,6 +9,13 @@ import { ServiceTypeProps } from "../../types/Tipagens";
 class ServiceTypeService{
     async execute({name}:ServiceTypeProps){
         try{
+            const exists = await prismaClient.serviceType.findFirst({
+                where: {name:name}
+            })
+            if(exists){
+                return {success: false, message: "Serviço ja existe!"}
+            }
+                //Criar se não existir
              const servicesTypes = await prismaClient.serviceType.create({
                 data:{
                     name:name
