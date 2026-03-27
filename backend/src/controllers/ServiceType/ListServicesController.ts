@@ -1,8 +1,8 @@
-import { Request, Response } from "express";
+import { Response } from "express";
 import { ListServicesService } from "../../services/ServiceType/ListServices";
 
 class ListServicesController{
-    async handle(req: Request, res: Response){
+    async handle( res: Response){
 
         const listServices = new ListServicesService()
 

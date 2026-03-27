@@ -20,3 +20,12 @@ export interface Appointment{
   userId: string;
   user?: any;
 }
+
+  export interface CreateAppointmentDTO {
+            scheduledAt: Date;
+            description: string;
+            type: AppointmentType;
+            userId: string;
+            serviceTypeID: string;
+            professionalID?: string;
+}

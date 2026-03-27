@@ -5,10 +5,11 @@ import { createUserSchema, loginUserSchema } from "./schemas/userSchema";
 import { LoginUserController } from "./controllers/User/LoginUserController";
 import { DetailUserController } from "./controllers/User/DetailUserController";
 import { isAuthenticated } from "./middlewares/isAuthenticated";
-import { ServicesController } from "./controllers/ServiceType/ServicesController";
+import { ServicesController } from "./controllers/ServiceType/CreateServicesController";
 import { isAdmin } from "./middlewares/isAdmin";
 import { createServiceTypeSchema } from "./schemas/serviceSchema";
 import { ListServicesController } from "./controllers/ServiceType/ListServicesController";
+import { CreateAppointmentController } from "./controllers/Appointments/CreateAppointmentController";
 
 
 const router = Router()
@@ -22,5 +23,7 @@ router.get("/me", isAuthenticated, new DetailUserController().handle)
 router.post("/serviceType", isAuthenticated, isAdmin, validateSchema(createServiceTypeSchema), new ServicesController().handle)
 
 router.get("/serviceType", isAuthenticated, new ListServicesController().handle)
+
+router.post("/appointments", isAuthenticated, new CreateAppointmentController().handle)
 
 export { router }
