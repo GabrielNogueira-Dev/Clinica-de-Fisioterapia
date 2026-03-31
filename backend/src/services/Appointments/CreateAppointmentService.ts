@@ -14,7 +14,7 @@ try{
               serviceTypeID: serviceTypeID,
               type: type,
              professionalID: professionalID || null,
-             status: AppointmentStatus.PENDING,
+             status: AppointmentStatus.CONFIRMED,
             }
         })
 return createAppointment

@@ -10,10 +10,13 @@ async execute(){
             id: true,
             name: true,
             createdAt: true,
+        },
+        orderBy: {
+            createdAt: "desc"
         }
     })
-    return serviceList
     console.log(serviceList)
+    return serviceList
    }catch(err){
     return {success: false, error: "Falha ao listar servicos: " + err}
    }

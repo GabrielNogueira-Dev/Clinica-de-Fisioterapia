@@ -10,6 +10,7 @@ import { isAdmin } from "./middlewares/isAdmin";
 import { createServiceTypeSchema } from "./schemas/serviceSchema";
 import { ListServicesController } from "./controllers/ServiceType/ListServicesController";
 import { CreateAppointmentController } from "./controllers/Appointments/CreateAppointmentController";
+import { DeleteAppointmentController } from "./controllers/Appointments/DeleteAppointmentsController";
 
 
 const router = Router()
@@ -25,5 +26,8 @@ router.post("/serviceType", isAuthenticated, isAdmin, validateSchema(createServi
 router.get("/serviceType", isAuthenticated, new ListServicesController().handle)
 
 router.post("/appointments", isAuthenticated, new CreateAppointmentController().handle)
+
+router.delete("/appointments", isAuthenticated, isAdmin , new DeleteAppointmentController().handle)
+
 
 export { router }
