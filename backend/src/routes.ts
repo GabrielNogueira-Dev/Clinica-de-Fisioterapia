@@ -11,6 +11,7 @@ import { createServiceTypeSchema } from "./schemas/serviceSchema";
 import { ListServicesController } from "./controllers/ServiceType/ListServicesController";
 import { CreateAppointmentController } from "./controllers/Appointments/CreateAppointmentController";
 import { DeleteAppointmentController } from "./controllers/Appointments/DeleteAppointmentsController";
+import { ListAppointmentsController } from "./controllers/Appointments/ListAppointmentsController";
 
 
 const router = Router()
@@ -27,7 +28,9 @@ router.get("/serviceType", isAuthenticated, new ListServicesController().handle)
 
 router.post("/appointments", isAuthenticated, new CreateAppointmentController().handle)
 
-router.delete("/appointments", isAuthenticated, isAdmin , new DeleteAppointmentController().handle)
+router.delete("/appointments/:id", isAuthenticated, isAdmin , new DeleteAppointmentController().handle)
+
+router.get("/appointments", isAuthenticated , new ListAppointmentsController().handle)
 
 
 export { router }
