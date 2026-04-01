@@ -3,16 +3,19 @@ import { CreateAppointmentDTO } from "../../types/Tipagens";
 import { AppointmentStatus } from "../../generated/prisma/enums";
 
 class CreateAppointmentService{
-    async execute({userId,description,scheduledAt,serviceTypeID,type,professionalID}: CreateAppointmentDTO){
+    async execute(userId:string,data:CreateAppointmentDTO){
+
 try{
     
+    const {description,scheduledAt,serviceTypeID,type,professionalID} = data
+
         const createAppointment = await prismaClient.appointment.create({
             data: {
-              userId: userId,
-              description: description,
-              scheduledAt:scheduledAt,
-              serviceTypeID: serviceTypeID,
-              type: type,
+              userId,
+              description,
+              scheduledAt,
+              serviceTypeID,
+              type,
              professionalID: professionalID || null,
              status: AppointmentStatus.CONFIRMED,
             }

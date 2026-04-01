@@ -1,3 +1,4 @@
+import { AppointmentStatus } from "../../generated/prisma/enums";
 import prismaClient from "../../prisma";
 
     interface StatusProps{
@@ -12,10 +13,10 @@ import prismaClient from "../../prisma";
                     id : AppointmentID
                 },
                 data: {
-                    status: "CANCELLED"
+                    status: AppointmentStatus.CANCELLED
                 }
             })
-            
+             console.log("PARAM ID:", deleteStatus);
             return deleteStatus
 
         }

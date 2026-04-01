@@ -25,7 +25,7 @@ export interface Appointment{
             scheduledAt: Date;
             description: string;
             type: AppointmentType;
-            userId: string;
+
             serviceTypeID: string;
             professionalID?: string;
 }

@@ -12,6 +12,7 @@ import { ListServicesController } from "./controllers/ServiceType/ListServicesCo
 import { CreateAppointmentController } from "./controllers/Appointments/CreateAppointmentController";
 import { DeleteAppointmentController } from "./controllers/Appointments/DeleteAppointmentsController";
 import { ListAppointmentsController } from "./controllers/Appointments/ListAppointmentsController";
+import { ListAppointmentsByUserController } from "./controllers/Appointments/ListAppointmentsByUserController";
 
 
 const router = Router()
@@ -30,7 +31,9 @@ router.post("/appointments", isAuthenticated, new CreateAppointmentController().
 
 router.delete("/appointments/:id", isAuthenticated, isAdmin , new DeleteAppointmentController().handle)
 
-router.get("/appointments", isAuthenticated , new ListAppointmentsController().handle)
+router.get("/appointments", isAuthenticated , isAdmin , new ListAppointmentsController().handle)
+
+router.get("/appointmentsbyuser", isAuthenticated , new ListAppointmentsByUserController().handle)
 
 
 export { router }

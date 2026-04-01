@@ -3,6 +3,8 @@ import prismaClient from "../../prisma";
 class ListAppointmentsService{
     async execute(){
 
+        
+
         const list = await prismaClient.appointment.findMany({
             select: {
                 user:{
