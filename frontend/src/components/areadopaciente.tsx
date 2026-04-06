@@ -1,16 +1,100 @@
+"use client"
 
+export default function AreaDoPaciente() {
+  return (
+    <div id="Area-do-paciente" className="bg-[#E6F7EF] mt-10 pb-20 w-full">
+      
+      <nav className="flex flex-col items-center justify-center py-10">
+        <h1 className="text-3xl font-bold text-center py-10">Área do Paciente</h1>
+        <span className="flex w-xl text-center items-center justify-center text-[#6B7280]">
+          Acesse sua conta para gerenciar suas consultas ou cadastre-se para realizar seu primeiro agendamento.
+        </span>
+      </nav>
 
-export default function AreaDoPaciente(){
+      <nav className="flex flex-col md:flex-row w-full md:w-[70%] sm:w-[80%] p-8 bg-white rounded-md shadow-md mx-auto  sm:items-center sm:justify-center ">
+        
+        {/* Esquerda */}
+        <section className="flex flex-col w-1/2 md:items-start ">
+          <h2 className="font-bold text-2xl mb-5">Já sou paciente</h2>
 
-    return(
-        <div id="Area-do-paciente" className="bg-[#E6F7EF] mt-10 w-full">
-           <nav className="flex flex-col items-center justify-center py-10">
-             <h1 className="text-3xl font-bold text-center py-10">Área do Paciente</h1>
-          <span className="flex w-xl text-center items-center justify-center text-[#6B7280]">
-  Acesse sua conta para gerenciar suas consultas ou cadastre-se para realizar seu primeiro agendamento.
-</span>
+          <label htmlFor="email" className="font-medium">E-mail</label>
+          <input
+            id="email"
+            className="px-3 w-full max-w-sm py-2 mt-2 font-semibold text-[14px] text-[#6B7280] 
+                       border border-gray-300 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-[#2BAE66] focus:border-[#2BAE66]"
+            placeholder="seu@email.com"
+            type="email"
+          />
 
-           </nav>
-        </div>
-    )
+          <label htmlFor="senha" className="font-medium mt-5">Senha</label>
+          <input
+            id="senha"
+            className="px-3 w-full max-w-sm py-2 mt-2 font-semibold text-[14px] text-[#6B7280] 
+                       border border-gray-300 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-[#2BAE66] focus:border-[#2BAE66]"
+            placeholder="*******"
+            type="password"
+          />
+        </section>
+
+        {/* Direita */}
+        <section className="flex flex-col w-1/2 justify-center md:items-start ">
+          <h2 className="font-bold text-2xl mb-5 mt-10 md:mt-0">Novo por aqui?</h2>
+
+           <label htmlFor="nome" className="font-medium">Nome Completo</label>
+          <input
+            id="nome"
+            className="px-3 w-full py-2 mt-2 font-semibold text-[14px] text-[#6B7280] 
+                       border border-gray-300 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-[#2BAE66] focus:border-[#2BAE66]"
+            placeholder="Ex: Maria Joaquina Silva"
+            type="text"/>
+
+             <label htmlFor="email" className="font-medium">E-mail</label>
+          <input
+            id="email"
+            className="px-3 w-full py-2 mt-2 font-semibold text-[14px] text-[#6B7280] 
+                       border border-gray-300 rounded-md 
+                       focus:outline-none focus:ring-2 focus:ring-[#2BAE66] focus:border-[#2BAE66]"
+            placeholder="Ex: maria@email.com"
+            type="email"/>
+
+                { /* Telefone e senha ao lado um do outro */}
+{/* Telefone + Senha lado a lado */}
+<section className="flex flex-col md:flex-row w-full gap-6 mt-5">
+
+  {/* Coluna Telefone */}
+  <div className="flex flex-col w-full md:w-1/2">
+    <label htmlFor="telefone" className="font-medium">Telefone</label>
+    <input
+      id="telefone"
+      className="mt-2 px-3 w-full max-w-xs py-2 font-semibold text-[14px] text-[#6B7280]
+                 border border-gray-300 rounded-md
+                 focus:outline-none focus:ring-2 focus:ring-[#2BAE66] focus:border-[#2BAE66]"
+      type="text"
+      placeholder="(00) 00000-0000"
+    />
+  </div>
+
+  {/* Coluna Senha */}
+  <div className="flex flex-col w-full md:w-1/2">
+    <label htmlFor="senha" className="font-medium">Senha</label>
+    <input
+      id="senha"
+      className="mt-2 px-3 w-full max-w-xs py-2 font-semibold text-[14px] text-[#6B7280]
+                 border border-gray-300 rounded-md
+                 focus:outline-none focus:ring-2 focus:ring-[#2BAE66] focus:border-[#2BAE66]"
+      type="password"
+      placeholder="*******"
+    />
+  </div>
+
+</section>
+
+        </section>
+
+      </nav>
+    </div>
+  );
 }
