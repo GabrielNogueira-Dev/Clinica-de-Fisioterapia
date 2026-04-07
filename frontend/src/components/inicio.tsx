@@ -24,7 +24,7 @@ export default function Inicio() {
             Ver Especialidades
           </span>
 
-          <span className="text-[16px] font-semibold text-black cursor-pointer">
+          <span className="text-[16px] font-semibold text-black cursor-pointer border border-[#b6b8ba] rounded-md px-4 py-2">
             Acessar minha conta
           </span>
         </section>

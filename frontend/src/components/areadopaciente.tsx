@@ -5,7 +5,7 @@ export default function AreaDoPaciente() {
     <div id="Area-do-paciente" className="bg-[#E6F7EF] mt-10 pb-20 w-full">
       
       <nav className="flex flex-col items-center justify-center py-10">
-        <h1 className="text-3xl font-bold text-center py-10">Área do Paciente</h1>
+        <h1 className="text-2xl font-bold text-center py-10">Área do Paciente</h1>
         <span className="flex w-xl text-center items-center justify-center text-[#6B7280]">
           Acesse sua conta para gerenciar suas consultas ou cadastre-se para realizar seu primeiro agendamento.
         </span>
@@ -15,7 +15,7 @@ export default function AreaDoPaciente() {
         
         {/* Esquerda */}
         <section className="flex flex-col w-1/2 md:items-start ">
-          <h2 className="font-bold text-2xl mb-5">Já sou paciente</h2>
+          <h2 className="font-bold text-xl mb-5">Já sou paciente</h2>
 
           <label htmlFor="email" className="font-medium">E-mail</label>
           <input
@@ -67,7 +67,7 @@ export default function AreaDoPaciente() {
 
         {/* Direita */}
         <section className="flex flex-col w-1/2 justify-center md:items-start ">
-          <h2 className="font-bold text-2xl mb-5 mt-10 md:mt-0">Novo por aqui?</h2>
+          <h2 className="font-bold text-xl mb-5 mt-10 md:mt-0">Novo por aqui?</h2>
 
            <label htmlFor="nome" className="font-medium">Nome Completo</label>
           <input

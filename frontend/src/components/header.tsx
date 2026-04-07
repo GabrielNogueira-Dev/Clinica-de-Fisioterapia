@@ -8,7 +8,7 @@ import { useState } from "react"
 export default function Header(){
     const [activeinicio,setActiveinicio] = useState("inicio")
     const [activeareadopaciente,setActiveareadopaciente] = useState("areadopaciente")
-
+    const [activeagendamento,setActiveagendamento] = useState("agendamento")
 
     return(
         <header className="h-[70] w-full bg-[#F7FBFA] border-b-2 border-[#E5E5E5] flex items-center justify-center">
@@ -30,6 +30,13 @@ export default function Header(){
                 activeareadopaciente === "areadopaciente" ? "text-[#2BAE66]" : "text-[#0F1720]"
                } evenly between ml-10 `}>
              Área do paciente</a>
+
+               <a href="#Area-do-paciente"
+               onClick= {()=> setActiveagendamento("agendamento")}
+               className={`font-semibold cursor-pointer transition-colors ${
+                activeagendamento === "agendamento" ? "text-[#2BAE66]" : "text-[#0F1720]"
+               } evenly between ml-10 `}>
+             Agendar Consulta</a>
 
         </header>
     )
