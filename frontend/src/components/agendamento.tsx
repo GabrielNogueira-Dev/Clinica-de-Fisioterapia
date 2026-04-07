@@ -1,4 +1,6 @@
 import pilates from "../../public/pilates.png"
+import ventosaterapia from "../../public/ventosaterapia.png"
+import acumpuntura from "../../public/acumpuntura.png"
 import Image from "next/image"
 
 export default function Agendamento(){
@@ -27,18 +29,51 @@ export default function Agendamento(){
   </h3>
 
 </nav>
-        <section className="flex flex-col     ">
-            
-            <nav className="flex flex-col  w-full">
-                <Image
-                src={pilates}
-                alt="pilates icon"
-                className=" bg-[#2BAE66] rounded-full max-w-md lg:max-w-lg h-auto"
-                priority
-                />
-            </nav>
+    
+    <section className="flex flex-row w-[50%] justify-center items-start gap-10">
 
-        </section>
+  <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 w-48 min-h-[240px] shadow-lg shadow-black/10">
+    <Image
+      src={pilates}
+      alt="pilates icon"
+      className="bg-[#2BAE66] rounded-full w-16 h-16 p-3 mb-5"
+      priority
+    />
+    <span className="font-bold text-[#0F1720]">Pilates</span>
+    <p className="mt-1 text-[#6B7280] text-sm">
+      Sessão focada em postura e flexibilidade do paciente.
+    </p>
+  </nav>
+
+  <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 w-48 min-h-[240px] shadow-lg shadow-black/10">
+    <Image
+      src={ventosaterapia}
+      alt="ventosaterapia icon"
+      className="bg-[#2BAE66] rounded-full w-16 h-16 p-3 mb-5"
+      priority
+    />
+    <span className="font-bold text-[#0F1720]">Ventosaterapia</span>
+    <p className="mt-1 text-[#6B7280] text-sm">
+      Alívio de dores musculares através de sucção terapêutica.
+    </p>
+  </nav>
+
+  <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 w-48 min-h-[240px] shadow-lg shadow-black/10">
+    <Image
+      src={acumpuntura}
+      alt="acupuntura icon"
+      className="bg-[#2BAE66] rounded-full w-16 h-16 p-3 mb-5"
+      priority
+    />
+    <span className="font-bold text-[#0F1720]">Acupuntura</span>
+    <p className="mt-1 text-[#6B7280] text-sm">
+      Equilíbrio energético e tratamento de diversas patologias.
+    </p>
+  </nav>
+
+    </section>
+
+
 
 
 
