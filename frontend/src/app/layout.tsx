@@ -24,9 +24,9 @@ export default function RootLayout({
   return (
     <html
       lang="pt-BR"
-      className={`${inter.className} h-full antialiased`}
+      className={`${inter.className} h-full antialiased max-w-screen-2xl mx-auto`}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="w-full min-h-full flex flex-col">
         <Header />
         {children}
         <Footer/>
@@ -34,3 +34,5 @@ export default function RootLayout({
     </html>
   );
 }
+
+
