@@ -18,45 +18,34 @@ export default function DataHora() {
   )
 
   return (
-    <Card size="sm" className="mx-auto w-fit border border-[#e9eaec]" lang="pt-br">
-      <CardContent >
+    <Card
+      size="sm"
+      className="mx-auto w-fit border border-[#e9eaec]"
+      lang="pt-br"
+    >
+      <CardContent>
         <Calendar
           mode="single"
           selected={date}
           onSelect={setDate}
           className="p-0 cursor-pointer"
-          
         />
       </CardContent>
+
       <CardFooter className="border-t bg-card">
         <FieldGroup>
           <Field>
-            <FieldLabel htmlFor="time-from">Inicio</FieldLabel>
+            <FieldLabel htmlFor="time-from">Início</FieldLabel>
             <InputGroup>
               <InputGroupInput
                 id="time-from"
                 type="time"
-                step="1"
-                defaultValue="10:00:00"
+                defaultValue="10:00"
+                step="60" // garante que NÃO aparecem segundos
                 className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
               />
               <InputGroupAddon>
                 <Clock2Icon className="text-black" />
-              </InputGroupAddon>
-            </InputGroup>
-          </Field>
-          <Field>
-            <FieldLabel htmlFor="time-to">Fim</FieldLabel>
-            <InputGroup>
-              <InputGroupInput
-                id="time-to"
-                type="time"
-                step="1"
-                defaultValue="11:00:00"
-                className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
-              />
-              <InputGroupAddon>
-                <Clock2Icon className=" text-black" />
               </InputGroupAddon>
             </InputGroup>
           </Field>

@@ -1,13 +1,14 @@
 "use client";
 
 export default function AreaDoPaciente() {
+
   return (
     <div
       id="Area-do-paciente"
       className="bg-[#E6F7EF] mt-10 pb-20 w-full mx-auto px-2"
     >
       <nav className="flex flex-col items-center justify-center py-10">
-        <h1 className="text-2xl font-bold text-center py-10">
+        <h1 className="text-[#0F1720] text-2xl font-bold text-center py-10">
           Área do Paciente
         </h1>
         <span className="flex w-full max-w-xl text-center items-center justify-center text-[#6B7280]">
@@ -19,9 +20,9 @@ export default function AreaDoPaciente() {
       <nav className="flex flex-col md:flex-row md:w-[70%] sm:w-[80%] p-8 bg-white rounded-md shadow-md mx-auto md:items-start sm:items-center sm:justify-center">
         {/* Esquerda */}
         <section className="flex flex-col w-full md:w-1/2 md:items-start">
-          <h2 className="font-bold text-xl mb-5">Já sou paciente</h2>
+          <h2 className="font-bold text-xl mb-5 text-[#0F1720]">Já sou paciente</h2>
 
-          <label htmlFor="login-email" className="font-medium">
+          <label htmlFor="login-email" className="font-medium text-[#0F1720]">
             E-mail
           </label>
           <input
@@ -31,7 +32,7 @@ export default function AreaDoPaciente() {
             type="email"
           />
 
-          <label htmlFor="login-senha" className="font-medium mt-5">
+          <label htmlFor="login-senha" className="font-medium mt-5 text-[#0F1720]">
             Senha
           </label>
           <input
@@ -59,7 +60,7 @@ export default function AreaDoPaciente() {
           </section>
 
           <div className="flex text-center items-center justify-center w-full">
-            <button className="w-full md:py-2 sm:py-1 mt-3 rounded-sm bg-[#2BAE66] text-white">
+            <button className="w-full md:py-2 sm:py-1 mt-3 rounded-sm bg-[#2BAE66] text-white cursor-pointer">
               Entrar na conta
             </button>
           </div>
@@ -70,11 +71,11 @@ export default function AreaDoPaciente() {
 
         {/* Direita */}
         <section className="flex flex-col w-full md:w-1/2 justify-center md:items-start">
-          <h2 className="font-bold text-xl mb-5 mt-10 md:mt-0">
+          <h2 className="text-[#0F1720] font-bold text-xl mb-5 mt-10 md:mt-0">
             Novo por aqui?
           </h2>
 
-          <label htmlFor="cad-nome" className="font-medium">
+          <label htmlFor="cad-nome" className="font-medium text-[#0F1720]">
             Nome Completo
           </label>
           <input
@@ -84,7 +85,7 @@ export default function AreaDoPaciente() {
             type="text"
           />
 
-          <label htmlFor="cad-email" className="font-medium">
+          <label htmlFor="cad-email" className="font-medium text-[#0F1720]">
             E-mail
           </label>
           <input
@@ -97,7 +98,7 @@ export default function AreaDoPaciente() {
           {/* Telefone + Senha */}
           <section className="flex flex-col md:flex-row w-full gap-6 mt-5">
             <div className="flex flex-col w-full md:w-1/2">
-              <label htmlFor="cad-telefone" className="font-medium">
+              <label htmlFor="cad-telefone" className="font-medium text-[#0F1720]">
                 Telefone
               </label>
               <input
@@ -109,7 +110,7 @@ export default function AreaDoPaciente() {
             </div>
 
             <div className="flex flex-col w-full md:w-1/2">
-              <label htmlFor="cad-senha" className="font-medium">
+              <label htmlFor="cad-senha" className="font-medium text-[#0F1720]">
                 Senha
               </label>
               <input
@@ -122,7 +123,7 @@ export default function AreaDoPaciente() {
           </section>
 
           <div className="flex text-center items-center justify-center w-full">
-            <button className="w-full md:py-2 sm:py-1 mt-3 rounded-sm bg-[#b6b8ba] text-[#0F1720] cursor-pointer">
+            <button className="text-[#0F1720] w-full md:py-2 sm:py-1 mt-3 rounded-sm bg-[#b6b8ba] cursor-pointer ">
               Criar minha conta
             </button>
           </div>
