@@ -1,7 +1,7 @@
 "use client"
 import clinica from '../../public/Fisioterapia.png';
 import Image from 'next/image';
-
+import { FaWhatsapp } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
 
 export default function Inicio() {
@@ -35,9 +35,14 @@ export default function Inicio() {
             Ver Especialidades
           </button>
 
-          <span className="text-[16px] font-semibold text-black cursor-pointer border border-[#b6b8ba] rounded-md px-4 py-2">
-            Avaliação do especialista
-          </span>
+          <a
+  href="https://wa.me/081000000000?text=Olá!%20Gostaria%20de%20saber%20mais%20e%20marcar%20uma%20consulta."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex gap-2 text-[16px] bg-[#eef1f4c0] font-semibold text-black cursor-pointer border border-[#b6b8ba] rounded-md px-4 py-2"
+>
+  Falar no WhatsApp   <FaWhatsapp size={22}className='text-[#2BAE66]'/>
+</a>
         </section>
       </nav>
 

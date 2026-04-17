@@ -1,7 +1,7 @@
 
 import pilates from "../../../public/pilates.png";
-import ventosaterapia from "../../../public/ventosaterapia.png";
-import acumpuntura from "../../../public/acumpuntura.png";
+import ventosa from "../../../public/ventosa.png";
+import acupuntura from "../../../public/acupuntura.png";
 import Image from "next/image";
 
 export default function Especialidade(){
@@ -34,7 +34,7 @@ export default function Especialidade(){
         
                       <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 md:w-48 min-h-60 shadow-lg shadow-black/10 cursor-pointer">
                         <Image
-                          src={ventosaterapia}
+                          src={ventosa}
                           alt="ventosaterapia icon"
                           className="bg-[#2BAE66] rounded-full w-16 h-16 p-3 mb-5"
                           priority
@@ -47,7 +47,7 @@ export default function Especialidade(){
         
                       <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 md:w-48 min-h-60 shadow-lg shadow-black/10 cursor-pointer">
                         <Image
-                          src={acumpuntura}
+                          src={acupuntura}
                           alt="acupuntura icon"
                           className="bg-[#2BAE66] rounded-full w-16 h-16 p-3 mb-5"
                           priority

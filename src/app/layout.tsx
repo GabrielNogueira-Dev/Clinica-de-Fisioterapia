@@ -24,7 +24,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
+    
     <html
       lang="pt-BR"
       className={cn("h-full", "antialiased", "max-w-screen-2xl", "mx-auto", inter.className, "font-sans", geist.variable)}

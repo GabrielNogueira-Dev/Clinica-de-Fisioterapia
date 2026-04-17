@@ -1,6 +1,68 @@
 "use client";
 
+import { api } from "@/services/api";
+import { login,cadastro } from "../services/auth";
+import { useState } from "react";
+import  Cookies  from "js-cookie";
+
+
 export default function AreaDoPaciente() {
+
+
+const [nome,setNome] = useState("")
+const [emailCadastro,setEmailCadastro] = useState("")
+const [telefone,setTelefone] = useState("")
+const [senhaCadastro,setSenhaCadastro] = useState("")
+const [email,setEmail] = useState("")
+const [senha,setSenha] = useState("")
+
+
+async function handleLogin() {
+  try {
+    const data = {
+      email: email,
+      password: senha
+    };
+
+    const response = await api.post("/session", data);
+
+    const token = response.data.token;
+
+    Cookies.set("token", token, {
+      expires: 60,
+      path: "/"
+    });
+
+    console.log("token salvo", token);
+
+    return { success: true, error: "" };
+
+  } catch (err) {
+    console.log("Error ao tentar fazer Login", err);
+    return { success: false, error: "Erro ao tentar fazer login" };
+  }
+}
+
+ async function handleCadastro() {
+  try {
+    const data = {
+      name: nome,
+      email: emailCadastro,
+      password: senhaCadastro
+    };
+console.log("enviando", data)
+    const response = await api.post("/users", data);
+
+    console.log("cadastro ok", response.data);
+
+    return { success: true, error: "" };
+
+  } catch (err) {
+    console.log("Error ao cadastrar", err);
+    return { success: false, error: "Erro ao cadastrar" };
+  }
+}
+
 
   return (
     <div
@@ -22,7 +84,8 @@ export default function AreaDoPaciente() {
         <section className="flex flex-col w-full md:w-1/2 md:items-start">
           <h2 className="font-bold text-xl mb-5 text-[#0F1720]">Já sou paciente</h2>
 
-          <label htmlFor="login-email" className="font-medium text-[#0F1720]">
+          <label 
+          htmlFor="login-email" className="font-medium text-[#0F1720]">
             E-mail
           </label>
           <input
@@ -30,6 +93,7 @@ export default function AreaDoPaciente() {
             className="px-3 w-full py-2 mt-2 font-semibold text-[14px] text-[#6B7280] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2BAE66] focus:border-[#2BAE66]"
             placeholder="seu@email.com"
             type="email"
+            value={email} onChange={(e) => setEmail(e.target.value)}
           />
 
           <label htmlFor="login-senha" className="font-medium mt-5 text-[#0F1720]">
@@ -40,6 +104,7 @@ export default function AreaDoPaciente() {
             className="px-3 w-full py-2 mt-2 font-semibold text-[14px] text-[#6B7280] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2BAE66] focus:border-[#2BAE66]"
             placeholder="*******"
             type="password"
+            value={senha} onChange={(e) => setSenha(e.target.value)}
           />
 
           {/* Lembrar-me e Esqueci minha senha */}
@@ -60,7 +125,8 @@ export default function AreaDoPaciente() {
           </section>
 
           <div className="flex text-center items-center justify-center w-full">
-            <button className="w-full md:py-2 sm:py-1 mt-3 rounded-sm bg-[#2BAE66] text-white cursor-pointer">
+            <button onClick={handleLogin}
+             className="w-full md:py-2 sm:py-1 mt-3 rounded-sm bg-[#2BAE66] text-white cursor-pointer">
               Entrar na conta
             </button>
           </div>
@@ -76,13 +142,14 @@ export default function AreaDoPaciente() {
           </h2>
 
           <label htmlFor="cad-nome" className="font-medium text-[#0F1720]">
-            Nome Completo
+            Nome 
           </label>
           <input
             id="cad-nome"
             className="px-3 w-full py-2 mt-2 mb-2 font-semibold text-[14px] text-[#6B7280] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2BAE66] focus:border-[#2BAE66]"
             placeholder="Ex: Maria Joaquina Silva"
             type="text"
+            value={nome} onChange={(e) => setNome(e.target.value)}
           />
 
           <label htmlFor="cad-email" className="font-medium text-[#0F1720]">
@@ -93,6 +160,7 @@ export default function AreaDoPaciente() {
             className="px-3 w-full py-2 mt-2 font-semibold text-[14px] text-[#6B7280] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2BAE66] focus:border-[#2BAE66]"
             placeholder="Ex: maria@email.com"
             type="email"
+            value={emailCadastro} onChange={(e) => setEmailCadastro(e.target.value)}
           />
 
           {/* Telefone + Senha */}
@@ -106,6 +174,7 @@ export default function AreaDoPaciente() {
                 className="mt-2 px-3 w-full max-w-xs py-2 font-semibold text-[14px] text-[#6B7280] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2BAE66] focus:border-[#2BAE66]"
                 type="text"
                 placeholder="(00) 00000-0000"
+                value={telefone} onChange={(e) => setTelefone(e.target.value)}
               />
             </div>
 
@@ -118,12 +187,14 @@ export default function AreaDoPaciente() {
                 className="mt-2 px-3 w-full max-w-xs py-2 font-semibold text-[14px] text-[#6B7280] border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-[#2BAE66] focus:border-[#2BAE66]"
                 type="password"
                 placeholder="*******"
+                value={senhaCadastro} onChange={(e) => setSenhaCadastro(e.target.value)}
               />
             </div>
           </section>
 
           <div className="flex text-center items-center justify-center w-full">
-            <button className="text-[#0F1720] w-full md:py-2 sm:py-1 mt-3 rounded-sm bg-[#b6b8ba] cursor-pointer ">
+            <button onClick={handleCadastro}
+             className="text-[#0F1720] w-full md:py-2 sm:py-1 mt-3 rounded-sm bg-[#b6b8ba] cursor-pointer ">
               Criar minha conta
             </button>
           </div>

@@ -141,7 +141,7 @@ export default function Agendamento() {
           {step > 1 && (
             <button
               onClick={prevStep}
-              className="cursor-pointer px-4 py-2 rounded-lg border border-gray-300 text-gray-600"
+              className="cursor-pointer px-4 py-2 rounded-lg border mb-5 border-gray-300 text-gray-600"
             >
               Voltar
             </button>
@@ -150,7 +150,7 @@ export default function Agendamento() {
           {step < 3 && (
             <button
               onClick={nextStep}
-              className="cursor-pointer px-4 py-2 rounded-lg bg-[#2BAE66] text-white font-semibold"
+              className="cursor-pointer px-4 py-2 rounded-lg mb-5 bg-[#2BAE66] text-white font-semibold"
             >
               Avançar
             </button>

@@ -12,17 +12,19 @@ export default function Header() {
       <div className="max-w-6xl mx-auto flex items-center justify-between px-6 py-4">
 
         {/* LOGO */}
-        <div className="flex items-center gap-1">
+        <div className="flex items-center gap-1" >
+          <a href="/" className="flex  items-center gap-1">
           <Image src={logo} alt="logo" width={28} height={28} />
           <h1 className="font-bold text-[#0F1720]">Olhar</h1>
           <span className="font-bold text-[#0F1720]">de</span>
           <h1 className="font-bold text-[#0F1720]">Fisio</h1>
+          </a>
         </div>
 
         {/* MENU DESKTOP */}
         <nav className="hidden md:flex items-center gap-10">
           <a
-            href="#inicio"
+            href="/"
             onClick={() => setActive("inicio")}
             className={`font-semibold transition-colors ${
               active === "inicio" ? "text-[#2BAE66]" : "text-[#0F1720]"
@@ -65,7 +67,7 @@ export default function Header() {
       {open && (
         <nav className="md:hidden flex flex-col gap-4 px-6 pb-4">
           <a
-            href="#inicio"
+            href="/inicio"
             onClick={() => {
               setActive("inicio");
               setOpen(false);

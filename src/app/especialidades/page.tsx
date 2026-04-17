@@ -1,4 +1,5 @@
 
+import AcupunturaEspecialidade from './acupuntura'
 import PilatesEspecialidade from './pilates'
 import VentosaEspecialidade from './ventosa'
 
@@ -7,6 +8,7 @@ export default function Especialidades() {
     <div>
    <PilatesEspecialidade/>
    <VentosaEspecialidade/>
+   <AcupunturaEspecialidade/>
     </div>
   )
 }
