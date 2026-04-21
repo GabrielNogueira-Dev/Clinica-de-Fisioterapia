@@ -5,7 +5,7 @@ import { useState } from "react";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("inicio");
+  const [active, setActive] = useState("areadopaciente");
 
   return (
     <header className="w-full bg-[#F7FBFA] border-b border-[#E5E5E5]">
@@ -23,15 +23,7 @@ export default function Header() {
 
         {/* MENU DESKTOP */}
         <nav className="hidden md:flex items-center gap-10">
-          <a
-            href="/"
-            onClick={() => setActive("inicio")}
-            className={`font-semibold transition-colors ${
-              active === "inicio" ? "text-[#2BAE66]" : "text-[#0F1720]"
-            }`}
-          >
-            Início
-          </a>
+        
 
           <a
             href="#Area-do-paciente"

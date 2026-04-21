@@ -1,10 +1,10 @@
 "use client"
 import { api } from "./api";
-import { LoginData,CadastroData } from "@/types/authTypes";
 import  Cookies  from "js-cookie";
-
+import { useState,useEffect } from "react";
 
 export async function handleLogin(email:string,password:string,lembrar:boolean) {
+  
   try {
     const data = {
       email: email,
@@ -15,11 +15,11 @@ export async function handleLogin(email:string,password:string,lembrar:boolean) 
 
     const token = response.data.token;
 
-    Cookies.set("TOKEN: ", token, {
+    Cookies.set("token", token, {
       expires: lembrar ? 60 : 1, //se lembrar senha fica por 60 dias senao apenas 1 dia fica salvo depois expira
       path: "/"
     });
-
+      window.location.reload()
     console.log("token foi salvo: ", token);
 
     return { success: true, error: "" };
@@ -48,4 +48,19 @@ console.log("enviando: ", data)
     console.log("Error ao cadastrar", err);
     return { success: false, error: "Erro ao cadastrar" };
   }
+}
+
+export function useAuth(){
+   const [isAuthenticated,setIsAuthenticated] = useState(false)
+   const [loading,setLoading] = useState(true)
+
+   useEffect(()=> {
+    const token = Cookies.get("token")
+    setIsAuthenticated(!!token) //O que for diferente de token é verdadeiro ou seja esta autenticado
+    setLoading(false) // acaba com o loading
+    
+
+   },[])
+
+        return {isAuthenticated, loading}
 }

@@ -35,7 +35,7 @@ const onCadastro = async () => {
   return (
     <div
       id="Area-do-paciente"
-      className="bg-[#E6F7EF] mt-10 pb-20 w-full mx-auto px-2"
+      className="bg-[#E6F7EF] mt-10 pb-20 w-full mx-auto px-2 "
     >
       <nav className="flex flex-col items-center justify-center py-10">
         <h1 className="text-[#0F1720] text-2xl font-bold text-center py-10">
@@ -50,7 +50,7 @@ const onCadastro = async () => {
       <nav className="flex flex-col md:flex-row md:w-[70%] sm:w-[80%] p-8 bg-white rounded-md shadow-md mx-auto md:items-start sm:items-center sm:justify-center">
         {/* Esquerda */}
         <section className="flex flex-col w-full md:w-1/2 md:items-start">
-          <h2 className="font-bold text-xl mb-5 text-[#0F1720]">Já sou paciente</h2>
+          <h2 className="font-bold text-xl mb-5 text-[#0F1720]">Login</h2>
 
           <label 
           htmlFor="login-email" className="font-medium text-[#0F1720]">
@@ -106,7 +106,7 @@ const onCadastro = async () => {
         {/* Direita */}
         <section className="flex flex-col w-full md:w-1/2 justify-center md:items-start">
           <h2 className="text-[#0F1720] font-bold text-xl mb-5 mt-10 md:mt-0">
-            Novo por aqui?
+            Cadastre-se
           </h2>
 
           <label htmlFor="cad-nome" className="font-medium text-[#0F1720]">

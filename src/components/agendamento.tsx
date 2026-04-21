@@ -3,10 +3,13 @@
 import { useState } from "react";
 import Especialidade from "./agendamentos/especialidade";
 import DataHora from "../components/agendamentos/dataehora";
-
+import { useAuth } from "@/services/auth";
 
 export default function Agendamento() {
+  const { isAuthenticated, loading } = useAuth();
   const [step, setStep] = useState(1);
+
+  const [especialidade,setEspecialidade] = useState("")
 
   function nextStep() {
     if (step < 3) setStep(step + 1);
@@ -16,6 +19,80 @@ export default function Agendamento() {
     if (step > 1) setStep(step - 1);
   }
 
+  // Enquanto verifica o cookie
+  if (loading) {
+    return (
+    <div className="mt-10 mb-10 flex flex-col items-center justify-center w-full min-h-[60vh] px-6">
+  
+  <div className=" mt-2 mb-2 bg-white shadow-md p-10 max-w-md w-full text-center animate-fadeIn">
+    
+    {/* Ícone animado */}
+    <div className="mt-2 w-14 h-14 mx-auto mb-4 flex items-center justify-center rounded-full bg-[#E6F7EF]">
+      <div className="w-7 h-7 border-4 border-[#2BAE66] border-t-transparent rounded-full animate-spin"></div>
+    </div>
+
+    {/* Texto */}
+    <p className=" mt-2 mb-2 text-lg font-semibold text-[#0F1720]">
+      Carregando seu agendamento...
+    </p>
+
+  </div>
+
+</div>
+
+    );
+  }
+
+  // Se NÃO estiver logado
+  if (!isAuthenticated) {
+    return (
+   <div className=" mt-10 mb-10 flex flex-col items-center justify-center w-full min-h-[60vh] px-6">
+  
+  <div className="bg-white shadow-lg border border-gray-200 rounded-xl p-10 max-w-md w-full text-center animate-fadeIn">
+    
+    {/* Ícone */}
+    <div className="mt-2 w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-[#E6F7EF]">
+      <span className="text-[#2BAE66] text-3xl">🔒</span>
+    </div>
+
+    {/* Título */}
+    <h2 className="text-2xl font-bold text-[#0F1720]">
+      Login necessário
+    </h2>
+
+    {/* Texto */}
+    <p className="text-[#6B7280] mt-3 leading-relaxed mb-5">
+      Para agendar sua consulta, você precisa acessar sua conta na Área do Paciente.
+    </p>
+
+    {/* Botão para direcionar */}
+   
+   <div className="mb-5">
+     <a
+  href="#Area-do-paciente"
+  className="
+    mt-10 w-full max-w-xs 
+    bg-[#2BAE66] text-white font-semibold 
+    py-3.5 px-6 rounded-lg 
+    shadow-md shadow-[#2BAE66]/20 
+    hover:bg-[#249a59] hover:shadow-lg 
+    transition-all duration-300 
+    text-center p-1.5
+  "
+>
+  Fazer Login
+</a>
+   </div>
+
+
+  </div>
+
+</div>
+
+    );
+  }
+
+  // Se estiver logado → mostra o fluxo de agendamento
   return (
     <div className="flex flex-col w-full">
       {/* Texto explicativo */}
@@ -116,17 +193,8 @@ export default function Agendamento() {
 
       {/* CONTEÚDOS DOS PASSOS */}
       <section className="flex flex-col w-full justify-center items-center mt-10 gap-5">
-        {/* PASSO 1 — Especialidade */}
-        {step === 1 && (
-         <Especialidade/>
-        )}
-
-        {/* PASSO 2 — Horário */}
-        {step === 2 && (
-         <DataHora/>
-        )}
-
-        {/* PASSO 3 — Confirmação */}
+        {step === 1 && <Especialidade />}
+        {step === 2 && <DataHora />}
         {step === 3 && (
           <div className="text-center text-[#0F1720] font-medium">
             <h3 className="text-xl">Confirme sua consulta</h3>
