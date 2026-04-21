@@ -1,10 +1,10 @@
 export interface LoginData{
     email:string;
-    senha:string;
+    password:string;
 }
 
 export interface CadastroData{
-  nome: string;
+  name: string;
   email: string;
-  senha: string;
+  password: string;
 }
