@@ -6,6 +6,8 @@ import DataHora from "../components/agendamentos/dataehora";
 import { useAuth } from "@/services/auth";
 import { api } from "@/services/api";
 
+import {toast} from "react-toastify"
+
 export default function Agendamento() {
   const { isAuthenticated, loading } = useAuth();
 
@@ -15,6 +17,7 @@ export default function Agendamento() {
   const [especialidade, setEspecialidade] = useState("");
   const [dataSelecionada, setDataSelecionada] = useState("");
   const [horarioSelecionado, setHorarioSelecionado] = useState("");
+
 
   function nextStep() {
     if (step < 3) setStep(step + 1);
@@ -33,11 +36,11 @@ export default function Agendamento() {
         type: especialidade,
         status: "CONFIRMED",
       });
-
-      alert("Agendamento confirmado com sucesso!");
+      
+      toast.success("Agendamento confirmado!")
     } catch (err) {
       console.log(err);
-      alert("Erro ao confirmar agendamento");
+      toast.error("Erro ao agendar!")
     }
   }
 

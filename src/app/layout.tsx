@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/header";
-
+import {ToastContainer} from "react-toastify"
 import { Inter, Geist } from 'next/font/google'
 import Footer from "@/components/footer";
 import { cn } from "@/lib/utils";
@@ -34,6 +34,7 @@ export default function RootLayout({
       <body className="w-full min-h-full flex flex-col">
         <Header />
         {children}
+        <ToastContainer/>
         <Footer/>
         </body>
     </html>
