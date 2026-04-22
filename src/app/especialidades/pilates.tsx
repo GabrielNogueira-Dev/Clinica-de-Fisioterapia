@@ -4,33 +4,18 @@ import verificado from '../../../public/verificado.png'
 import pilates from '../../../public/pilates.png'
 import pilatesexercicioo from '../../../public/pilatesexercicio.jpg'
 import seta from '../../../public/seta.png'
-import { api } from '@/services/api'
-import { useState } from 'react'
 
-
+import { useRouter } from 'next/navigation'
 
 export default function PilatesEspecialidade(){
+const router = useRouter()
 
-const [mensagem,setMensagem] = useState("")
 
-const handleClick = async () => {
-  try{
-    await api.post("/appointments", {
-    description: "Marcacao servico disponivel",
-      scheduledAt: new Date().toISOString(),
-      serviceTypeID: "ea8e1243-4bc5-4d3a-9db1-aeddcccdc2c2",
-      type: "PILATES",
-      status: "Confirmed"  
-    });
-    setMensagem("Especialidade marcada com sucesso!")
-    console.log("msg pilates sucesso")
-  return  {success:true, error:"Especialidade marcada com sucesso!"}
-  }catch(err){
-    setMensagem("Error ao salvar especialidade")
-      console.log("msg pilates erorr" + err)
-return {success:false, error:"Error ao salvar especialidade: "+ err}
-  }
-}
+const handleClick = () => {
+ 
+  router.replace("/#Agendamento");
+};
+
 
     return(
           <div className="flex flex-col bg-[#F7FBFA] w-full px-6 lg:px-20  gap-10 ">

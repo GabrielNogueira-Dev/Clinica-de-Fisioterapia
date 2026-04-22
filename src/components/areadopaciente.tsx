@@ -2,10 +2,8 @@
 
 import { useState } from "react";
 import { handleLogin, handleCadastro } from "@/services/auth";
-import  Cookies  from "js-cookie";
 
 export default function AreaDoPaciente() {
-
 
 const [nome,setNome] = useState("")
 const [emailCadastro,setEmailCadastro] = useState("")

@@ -95,7 +95,8 @@ export default function Agendamento() {
       </section>
 
       {/* CONTEÚDOS */}
-      <section className="flex flex-col w-full justify-center items-center mt-10 gap-5">
+      <section id="Agendamento"
+       className="flex flex-col w-full justify-center items-center mt-10 gap-5">
 
         {step === 1 && (
           <Especialidade setEspecialidade={setEspecialidade} />

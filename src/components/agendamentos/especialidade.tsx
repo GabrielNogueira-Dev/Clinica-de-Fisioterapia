@@ -50,7 +50,7 @@ export default function Especialidade({ setEspecialidade }: EspecialidadeProps) 
           />
           <span className="font-bold text-[#0F1720]">Pilates</span>
           <p className="mt-1 text-[#6B7280] text-sm">
-            Sessão focada em postura e flexibilidade do paciente.
+            Sessão focada em postura e flexibilidade motora do paciente.
           </p>
         </nav>
 

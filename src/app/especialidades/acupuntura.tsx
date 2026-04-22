@@ -1,16 +1,23 @@
+"use client"
 import Image from 'next/image'
 import verificado from '../../../public/verificado.png'
 import acupuntura from '../../../public/acupuntura.png'
 import acuputuraespecialidade from '../../../public/acuputuraespecialidade.jpg'
 import seta from '../../../public/seta.png'
 
+import { useRouter } from 'next/navigation'
+
 export default function AcupunturaEspecialidade(){
+  
+   const router = useRouter()
+
+  function handleClick(){
+    router.push("/?scrollTo=Agendamento")
+  }
 
     return(
           <div className="flex flex-col bg-[#F7FBFA] w-full px-6 lg:px-20  gap-10 ">
 
-      {/* TOPO  */}
-     
 
       {/* CONTEÚDO DUAS COLUNAS */}
       <section className="flex flex-col mt-15 lg:flex-row items-center justify-between w-full gap-10">
@@ -35,7 +42,8 @@ export default function AcupunturaEspecialidade(){
            Parte da Medicina tradicional Chinesa, estimula pontos específicos do corpo através de finas agulhas. É uma técnica segura e praticamente indolor, tem foco em reequilibrar a energia vital (Qi), tratando não apenas sintomas, mas a raiz de diversas patologias.
           </span>
 
-          <button className="p-2 bg-[#2BAE66] text-white rounded-sm w-fit cursor-pointer">
+          <button onClick={handleClick}
+          className="p-2 bg-[#2BAE66] text-white rounded-sm w-fit cursor-pointer">
             Agendar Sessão de Acupuntura
           </button>
         </div>
