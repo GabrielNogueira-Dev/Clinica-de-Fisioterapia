@@ -23,11 +23,21 @@ export default function DataHora({ setDataSelecionada, setHorarioSelecionado }: 
   const [date, setDate] = React.useState<Date | undefined>(undefined);
   const [hora, setHora] = React.useState("");
 
+// Formata a data corretamente (YYYY-MM-DD)
+  function formatarDataLocal(date: Date) {
+    const ano = date.getFullYear();
+    const mes = String(date.getMonth() + 1).padStart(2, "0");
+    const dia = String(date.getDate()).padStart(2, "0");
+    return `${ano}-${mes}-${dia}`;
+  }
+
   // Atualiza o estado do componente pai ao selecionar a data
   React.useEffect(() => {
     if (date) {
-      const dataFormatada = date.toISOString().split("T")[0];
+      
+      const dataFormatada = formatarDataLocal(date)
       setDataSelecionada(dataFormatada);
+     
     }
   }, [date, setDataSelecionada]);
 
