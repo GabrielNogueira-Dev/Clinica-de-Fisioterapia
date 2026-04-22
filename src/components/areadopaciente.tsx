@@ -1,8 +1,8 @@
-"use client";
+"use client"
 
 import { useState } from "react";
 import { handleLogin, handleCadastro } from "@/services/auth";
-
+import  Cookies  from "js-cookie";
 
 export default function AreaDoPaciente() {
 

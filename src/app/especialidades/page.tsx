@@ -7,8 +7,8 @@ export default function Especialidades() {
   return (
     <div>
    <PilatesEspecialidade/>
-   <VentosaEspecialidade/>
-   <AcupunturaEspecialidade/>
+   <VentosaEspecialidade />
+   <AcupunturaEspecialidade />
     </div>
   )
 }

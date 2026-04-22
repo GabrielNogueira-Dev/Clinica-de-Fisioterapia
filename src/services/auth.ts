@@ -1,4 +1,5 @@
 "use client"
+
 import { api } from "./api";
 import  Cookies  from "js-cookie";
 import { useState,useEffect } from "react";
@@ -8,7 +9,8 @@ export async function handleLogin(email:string,password:string,lembrar:boolean) 
   try {
     const data = {
       email: email,
-      password: password
+      password: password,
+      lembrar: lembrar
     };
 
     const response = await api.post("/session", data);
@@ -16,7 +18,7 @@ export async function handleLogin(email:string,password:string,lembrar:boolean) 
     const token = response.data.token;
 
     Cookies.set("token", token, {
-      expires: lembrar ? 60 : 1, //se lembrar senha fica por 60 dias senao apenas 1 dia fica salvo depois expira
+      expires: lembrar ? 60 : undefined, //se lembrar senha fica por 60 dias senao apenas 1 dia fica salvo depois expira
       path: "/"
     });
       window.location.reload()
@@ -63,4 +65,9 @@ export function useAuth(){
    },[])
 
         return {isAuthenticated, loading}
+}
+
+export function logout(){
+  Cookies.remove("token", {path:"/"});
+  window.location.reload();
 }

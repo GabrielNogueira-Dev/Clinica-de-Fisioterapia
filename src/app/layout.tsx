@@ -28,7 +28,7 @@ export default function RootLayout({
   return (
     
     <html
-      lang="pt-BR"
+      lang="pt-BR" data-scroll-behavior="smooth"
       className={cn("h-full", "antialiased", "max-w-screen-2xl", "mx-auto", inter.className, "font-sans", geist.variable)}
     >
       <body className="w-full min-h-full flex flex-col">

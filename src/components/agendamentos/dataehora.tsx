@@ -12,10 +12,31 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group"
 
-export default function DataHora() {
-  const [date, setDate] = React.useState<Date | undefined>(
-    new Date(new Date().getFullYear(), new Date().getMonth(), 12)
-  )
+import { Dispatch, SetStateAction } from "react";
+
+interface DataHoraProps {
+  setDataSelecionada: Dispatch<SetStateAction<string>>;
+  setHorarioSelecionado: Dispatch<SetStateAction<string>>;
+}
+
+export default function DataHora({ setDataSelecionada, setHorarioSelecionado }: DataHoraProps) {
+  const [date, setDate] = React.useState<Date | undefined>(undefined);
+  const [hora, setHora] = React.useState("");
+
+  // Atualiza o estado do componente pai ao selecionar a data
+  React.useEffect(() => {
+    if (date) {
+      const dataFormatada = date.toISOString().split("T")[0];
+      setDataSelecionada(dataFormatada);
+    }
+  }, [date, setDataSelecionada]);
+
+  // Atualiza o estado do componente pai ao selecionar o horário
+  React.useEffect(() => {
+    if (hora) {
+      setHorarioSelecionado(hora);
+    }
+  }, [hora, setHorarioSelecionado]);
 
   return (
     <Card
@@ -40,7 +61,8 @@ export default function DataHora() {
               <InputGroupInput
                 id="time-from"
                 type="time"
-                defaultValue="10:00"
+                value={hora}
+                onChange={e => setHora(e.target.value)}
                 step="60" // garante que NÃO aparecem segundos
                 className="appearance-none [&::-webkit-calendar-picker-indicator]:hidden [&::-webkit-calendar-picker-indicator]:appearance-none"
               />
@@ -52,5 +74,5 @@ export default function DataHora() {
         </FieldGroup>
       </CardFooter>
     </Card>
-  )
+  );
 }

@@ -2,10 +2,13 @@
 import logo from "../../public/Background.png";
 import Image from "next/image";
 import { useState } from "react";
+import { useAuth,logout } from "@/services/auth";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState("areadopaciente");
+
+  const {isAuthenticated, loading} = useAuth()
 
   return (
     <header className="w-full bg-[#F7FBFA] border-b border-[#E5E5E5]">
@@ -44,6 +47,17 @@ export default function Header() {
           >
             Agendar Consulta
           </a>
+
+     {!loading && isAuthenticated && (
+  <button
+    onClick={logout}
+    className="cursor-pointer font-semibold text-[#0F1720] hover:text-[#2BAE66] transition-colors"
+  >
+    Sair
+  </button>
+)}
+
+           
         </nav>
 
         {/* BOTÃO MOBILE */}
@@ -91,11 +105,24 @@ export default function Header() {
               setOpen(false);
             }}
             className={`font-semibold ${
-              active === "agendamento" ? "text-[#2BAE66]" : "text-[#0F1720]"
+              active === "agendamento" ? "cursor-pointer text-[#2BAE66]" : "text-[#0F1720]"
             }`}
           >
             Agendar Consulta
           </a>
+
+          {!loading && isAuthenticated && (
+  <button
+    onClick={() => {
+      logout();
+      setOpen(false);
+    }}
+    className="font-semibold text-[#0F1720] hover:text-[#2BAE66]"
+  >
+    Sair
+  </button>
+)}
+
         </nav>
       )}
     </header>

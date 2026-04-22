@@ -3,9 +3,13 @@ import pilates from "../../../public/pilates.png";
 import ventosa from "../../../public/ventosa.png";
 import acupuntura from "../../../public/acupuntura.png";
 import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
 
-export default function Especialidade(){
+interface EspecialidadeProps {
+  setEspecialidade: Dispatch<SetStateAction<string>>;
+}
 
+export default function Especialidade({ setEspecialidade }: EspecialidadeProps) {
     return(
          <>
                     <nav className="flex items-center gap-3">
@@ -19,7 +23,7 @@ export default function Especialidade(){
                     </nav>
         
                     <section className="flex flex-col md:flex-row w-[70%] justify-center items-start gap-10 mt-2">
-                      <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 md:w-48 min-h-60 shadow-lg shadow-black/10 cursor-pointer">
+                      <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 md:w-48 min-h-60 shadow-lg shadow-black/10 cursor-pointer" onClick={() => setEspecialidade("PILATES") }>
                         <Image
                           src={pilates}
                           alt="pilates icon"
@@ -32,7 +36,7 @@ export default function Especialidade(){
                         </p>
                       </nav>
         
-                      <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 md:w-48 min-h-60 shadow-lg shadow-black/10 cursor-pointer">
+                      <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 md:w-48 min-h-60 shadow-lg shadow-black/10 cursor-pointer" onClick={() => setEspecialidade("VENTOSATERAPIA") }>
                         <Image
                           src={ventosa}
                           alt="ventosaterapia icon"
@@ -45,7 +49,7 @@ export default function Especialidade(){
                         </p>
                       </nav>
         
-                      <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 md:w-48 min-h-60 shadow-lg shadow-black/10 cursor-pointer">
+                      <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 md:w-48 min-h-60 shadow-lg shadow-black/10 cursor-pointer" onClick={() => setEspecialidade("ACUPUNTURA") }>
                         <Image
                           src={acupuntura}
                           alt="acupuntura icon"

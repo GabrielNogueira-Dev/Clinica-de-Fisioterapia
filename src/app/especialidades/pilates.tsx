@@ -1,10 +1,36 @@
+"use client"
 import Image from 'next/image'
 import verificado from '../../../public/verificado.png'
 import pilates from '../../../public/pilates.png'
 import pilatesexercicioo from '../../../public/pilatesexercicio.jpg'
 import seta from '../../../public/seta.png'
+import { api } from '@/services/api'
+import { useState } from 'react'
+
+
 
 export default function PilatesEspecialidade(){
+
+const [mensagem,setMensagem] = useState("")
+
+const handleClick = async () => {
+  try{
+    await api.post("/appointments", {
+    description: "Marcacao servico disponivel",
+      scheduledAt: new Date().toISOString(),
+      serviceTypeID: "ea8e1243-4bc5-4d3a-9db1-aeddcccdc2c2",
+      type: "PILATES",
+      status: "Confirmed"  
+    });
+    setMensagem("Especialidade marcada com sucesso!")
+    console.log("msg pilates sucesso")
+  return  {success:true, error:"Especialidade marcada com sucesso!"}
+  }catch(err){
+    setMensagem("Error ao salvar especialidade")
+      console.log("msg pilates erorr" + err)
+return {success:false, error:"Error ao salvar especialidade: "+ err}
+  }
+}
 
     return(
           <div className="flex flex-col bg-[#F7FBFA] w-full px-6 lg:px-20  gap-10 ">
@@ -43,8 +69,9 @@ export default function PilatesEspecialidade(){
             O Pilates Clínico é um método terapêutico focado no controle muscular, correção postural e respiração. É ideal tanto para a reabilitação de lesões quanto para a melhora do condicionamento físico, força e flexibilidade do corpo.
           </span>
 
-          <button className="p-2 bg-[#2BAE66] text-white rounded-sm w-fit cursor-pointer">
-            Agendar Sessão de Pilates
+          <button onClick={handleClick} 
+           className="p-2 bg-[#2BAE66] text-white rounded-sm w-fit cursor-pointer">
+            Agendar Sessão de Pilates 
           </button>
         </div>
 
