@@ -45,7 +45,48 @@ export default function Agendamento() {
   }
 
   if (loading) return <div>Carregando...</div>;
-  if (!isAuthenticated) return <div>Faça login para agendar</div>;
+  if (!isAuthenticated) return <div className=" mt-10 mb-10 flex flex-col items-center justify-center w-full min-h-[60vh] px-6">
+  
+  <div className="bg-white shadow-lg border border-gray-200 rounded-xl p-10 max-w-md w-full text-center animate-fadeIn">
+    
+    {/* Ícone */}
+    <div className="mt-2 w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-[#E6F7EF]">
+      <span className="text-[#2BAE66] text-3xl">🔒</span>
+    </div>
+
+    {/* Título */}
+    <h2 className="text-2xl font-bold text-[#0F1720]">
+      Login necessário
+    </h2>
+
+    {/* Texto */}
+    <p className="text-[#6B7280] mt-3 leading-relaxed mb-5">
+      Para agendar sua consulta, você precisa acessar sua conta na Área do Paciente.
+    </p>
+
+    {/* Botão para direcionar */}
+   
+   <div className="mb-5">
+     <a
+  href="#Area-do-paciente"
+  className="
+    mt-10 w-full max-w-xs 
+    bg-[#2BAE66] text-white font-semibold 
+    py-3.5 px-6 rounded-lg 
+    shadow-md shadow-[#2BAE66]/20 
+    hover:bg-[#249a59] hover:shadow-lg 
+    transition-all duration-300 
+    text-center p-1.5
+  "
+>
+  Fazer Login
+</a>
+   </div>
+
+
+  </div>
+
+</div>;
 
   return (
     <div className="flex flex-col w-full">
@@ -106,6 +147,7 @@ export default function Agendamento() {
           <DataHora
             setDataSelecionada={setDataSelecionada}
             setHorarioSelecionado={setHorarioSelecionado}
+          
           />
         )}
 

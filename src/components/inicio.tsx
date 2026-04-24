@@ -13,7 +13,7 @@ export default function Inicio() {
   }
 
   return (
-    <div id='inicio' className="flex flex-col-reverse lg:flex-row items-center justify-between w-full px-6 lg:px-20 mt-10 lg:mt-20 gap-10">
+    <div id='inicio' className="flex flex-col-reverse mb-10 lg:flex-row items-center justify-between w-full px-6 lg:px-20 mt-10 lg:mt-20 gap-10">
 
       {/* Texto */}
       <nav className="flex flex-col max-w-xl gap-5">

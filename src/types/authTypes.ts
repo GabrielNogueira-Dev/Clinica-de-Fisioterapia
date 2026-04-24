@@ -8,3 +8,9 @@ export interface CadastroData{
   email: string;
   password: string;
 }
+
+export interface ListaIdProps{
+  description:string;
+  status:string;
+  scheduleAt:string;
+}
