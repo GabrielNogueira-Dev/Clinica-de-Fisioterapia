@@ -27,7 +27,9 @@ class ListAppointmentsByUserService{
                 serviceType:{
                     select:{
                         id:true,
-                        banner:true
+                        banner:true,
+                        type:true,
+                        name:true,
                     }
                 },
                 status: true,
