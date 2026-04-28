@@ -31,7 +31,7 @@ router.post("/appointments", isAuthenticated, new CreateAppointmentController().
 
 router.delete("/appointments/:id", isAuthenticated, isAdmin , new DeleteAppointmentController().handle)
 
-router.get("/appointments", isAuthenticated , isAdmin , new ListAppointmentsController().handle)
+router.get("/appointments", isAuthenticated, new ListAppointmentsController().handle)
 
 router.get("/appointmentsbyuser", isAuthenticated , new ListAppointmentsByUserController().handle)
 

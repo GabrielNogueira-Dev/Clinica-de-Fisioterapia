@@ -13,7 +13,7 @@ enum AppointmentType {
   SESSAO
   VENTOSATERAPIA
   PILATES
-  ACUMPUNTURA
+  ACUPUNTURA
 }
 
 enum AppointmentStatus {

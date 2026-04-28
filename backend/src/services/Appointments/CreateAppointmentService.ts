@@ -11,7 +11,7 @@ try{
 
         const createAppointment = await prismaClient.appointment.create({
             data: {
-              userId,
+              userId:userId,
               description,
               scheduledAt,
               serviceTypeID,
