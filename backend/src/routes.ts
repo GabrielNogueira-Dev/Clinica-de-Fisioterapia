@@ -29,7 +29,7 @@ router.get("/serviceType", isAuthenticated, new ListServicesController().handle)
 
 router.post("/appointments", isAuthenticated, new CreateAppointmentController().handle)
 
-router.delete("/appointments/:id", isAuthenticated, isAdmin , new DeleteAppointmentController().handle)
+router.delete("/appointments/:id", isAuthenticated, new DeleteAppointmentController().handle)
 
 router.get("/appointments", isAuthenticated, new ListAppointmentsController().handle)
 
