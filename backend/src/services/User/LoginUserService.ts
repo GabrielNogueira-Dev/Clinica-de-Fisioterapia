@@ -18,7 +18,7 @@ interface UserLoginProps{
             }
         })
         if(!user){
-              return {success:false, message:"Email/Password obrigatório(a)"}
+              throw new Error("Email ou password inválido")
         }
 
         const passwordMatch = await compare(password, user.password)
