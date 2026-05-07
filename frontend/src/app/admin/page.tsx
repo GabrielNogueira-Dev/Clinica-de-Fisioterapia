@@ -91,6 +91,35 @@ export default function Admin() {
 
   if (loading) return <p>Carregando...</p>;
 
+  function agruparPorMes(usuarios: any[]) {
+    
+  const meses: Record<string, any[]> = {};// Agrupa os agendamentos por mês ex: abril 2026": [...],
+
+  usuarios.forEach((user) => {
+    user.appointments.forEach((appt: any) => {
+      const data = new Date(appt.scheduledAt);
+
+      const chaveMes = data.toLocaleDateString("pt-PT", {
+        month: "long",
+        year: "numeric",
+      }); //transforma a data em uma string do tipo "abril 2026"
+
+      if (!meses[chaveMes]) {
+        meses[chaveMes] = [];
+      } // se ainda não existe "maio 2026", cria Exemplo: meses["maio de 2026"] = [];
+
+      meses[chaveMes].push({
+        ...appt,
+        userName: user.name,
+      });
+    }); // retorna um array de agendamentos com o nome do usuário Exemplo: [{id: 1, scheduledAt: "2026-05-10T14:00:00Z", userName: "João"}, ...]
+  });
+
+  return meses;
+}
+// Guarda os agendamentos agrupados por mês para exibir 
+const appointmentsByMonth = agruparPorMes(usuarios);
+
   return (
     <div className="w-full p-4 sm:p-10 lg:p-15">
 
@@ -167,114 +196,121 @@ export default function Admin() {
         <p>Carregando dados do usuário...</p>
       )}
       
-     {/* LISTA DE AGENDAMENTOS */}
+{/* LISTA DE AGENDAMENTOS */}
 <div className="mt-10">
-  <h1 className="text-black font-bold mb-4">
+  <h1 className="text-black text-lg font-bold mb-4">
     Lista de agendamentos
   </h1>
 
-  {/* DESKTOP TABLE */}
-  <div className="hidden sm:block overflow-x-auto bg-white rounded-xl shadow">
+  {Object.entries(appointmentsByMonth).map(([mes, agendamentos]: any) => (
+    <div key={mes} className="mb-10">
 
-    <table className="w-full text-sm text-left">
+      {/* HEADER DO MÊS */}
+      <h2 className="text-md font-bold text-black mb-3">
+        {mes}
+      </h2>
 
-      <thead className="bg-gray-100 text-gray-600">
-        <tr>
-          <th className="p-3">Paciente</th>
-          <th className="p-3">Especialidade</th>
-          <th className="p-3">Data e Hora</th>
-          <th className="p-3">Status</th>
-        </tr>
-      </thead>
+      {/* DESKTOP TABLE */}
+      <div className="hidden sm:block overflow-x-auto bg-white rounded-xl shadow">
+        <table className="w-full text-sm text-left">
 
-      <tbody>
-        {usuarios.map((user: any) =>
-          user.appointments.map((appt: any) => (
-            <tr key={appt.id} className="border-t hover:bg-gray-50">
-
-              <td className="p-3 font-medium text-[#0F1720]">
-                {user.name}
-              </td>
-
-              <td className="p-3 text-gray-600">
-                {appt.serviceType?.name}
-              </td>
-
-              <td className="p-3 text-gray-600">
-                {new Date(appt.scheduledAt).toLocaleDateString("pt-PT")} às{" "}
-                {new Date(appt.scheduledAt).toLocaleTimeString("pt-PT", {
-                  hour: "2-digit",
-                  minute: "2-digit",
-                })}
-              </td>
-
-              <td className="p-3">
-                <span
-                  className={`px-2 py-1 rounded text-xs font-semibold ${
-                    appt.status === "CONFIRMED"
-                      ? "bg-green-100 text-green-700"
-                      : appt.status === "CANCELLED"
-                      ? "bg-red-100 text-red-700"
-                      : "bg-yellow-100 text-yellow-700"
-                  }`}
-                >
-                  {appt.status}
-                </span>
-              </td>
-
+          <thead className="bg-gray-100 text-gray-600">
+            <tr>
+              <th className="p-3">Paciente</th>
+              <th className="p-3">Especialidade</th>
+              <th className="p-3">Data e Hora</th>
+              <th className="p-3">Status</th>
             </tr>
-          ))
-        )}
-      </tbody>
+          </thead>
 
-    </table>
-  </div>
+          <tbody>
+            {agendamentos.map((appt: any) => (
+              <tr key={appt.id} className="border-t hover:bg-gray-50">
 
-  {/* MOBILE CARDS */}
-  <div className="sm:hidden flex flex-col gap-4">
+                <td className="p-3 font-medium text-[#0F1720]">
+                  {appt.userName}
+                </td>
 
-    {usuarios.map((user: any) =>
-      user.appointments.map((appt: any) => (
-        <div
-          key={appt.id}
-          className="bg-white shadow rounded-xl p-4 border"
-        >
+                <td className="p-3 text-gray-600">
+                  {appt.serviceType?.name}
+                </td>
 
-          <p className="font-semibold text-[#0F1720]">
-            {user.name}
-          </p>
+                <td className="p-3 text-gray-600">
+                  {new Date(appt.scheduledAt).toLocaleDateString("pt-PT")} às{" "}
+                  {new Date(appt.scheduledAt).toLocaleTimeString("pt-PT", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </td>
 
-          <p className="text-sm text-gray-600 mt-1">
-            {appt.serviceType?.name}
-          </p>
+                <td className="p-3">
+                  <span
+                    className={`px-2 py-1 rounded text-xs font-semibold ${
+                      appt.status === "CONFIRMED"
+                        ? "bg-green-100 text-green-700"
+                        : appt.status === "CANCELLED"
+                        ? "bg-red-100 text-red-700"
+                        : "bg-yellow-100 text-yellow-700"
+                    }`}
+                  >
+                    {appt.status}
+                  </span>
+                </td>
 
-          <p className="text-sm text-gray-500 mt-1">
-            {new Date(appt.scheduledAt).toLocaleDateString("pt-PT")} às{" "}
-            {new Date(appt.scheduledAt).toLocaleTimeString("pt-PT", {
-              hour: "2-digit",
-              minute: "2-digit",
-            })}
-          </p>
+              </tr>
+            ))}
+          </tbody>
 
-          <span
-            className={`inline-block mt-2 px-2 py-1 rounded text-xs font-semibold ${
-              appt.status === "CONFIRMED"
-                ? "bg-green-100 text-green-700"
-                : appt.status === "CANCELLED"
-                ? "bg-red-100 text-red-700"
-                : "bg-yellow-100 text-yellow-700"
-            }`}
+        </table>
+      </div>
+
+      {/* MOBILE CARDS */}
+      <div className="sm:hidden flex flex-col gap-4">
+
+        {agendamentos.map((appt: any) => (
+          <div
+            key={appt.id}
+            className="bg-white shadow rounded-xl p-4 border"
           >
-            {appt.status}
-          </span>
 
-        </div>
-      ))
-    )}
+            <p className="font-semibold text-[#0F1720]">
+              {appt.userName}
+            </p>
 
-  </div>
-</div>
+            <p className="text-sm text-gray-600 mt-1">
+              {appt.serviceType?.name}
+            </p>
+
+            <p className="text-sm text-gray-500 mt-1">
+              {new Date(appt.scheduledAt).toLocaleDateString("pt-PT")} às{" "}
+              {new Date(appt.scheduledAt).toLocaleTimeString("pt-PT", {
+                hour: "2-digit",
+                minute: "2-digit",
+              })}
+            </p>
+
+            <span
+              className={`inline-block mt-2 px-2 py-1 rounded text-xs font-semibold ${
+                appt.status === "CONFIRMED"
+                  ? "bg-green-100 text-green-700"
+                  : appt.status === "CANCELLED"
+                  ? "bg-red-100 text-red-700"
+                  : "bg-yellow-100 text-yellow-700"
+              }`}
+            >
+              {appt.status}
+            </span>
+
+          </div>
+        ))}
+
+      </div>
 
     </div>
+  ))}
+</div>
+
+</div>
+
   );
 }
