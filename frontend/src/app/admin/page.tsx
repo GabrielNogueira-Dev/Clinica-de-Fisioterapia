@@ -214,8 +214,8 @@ const appointmentsByMonth = agruparPorMes(usuarios);
       <div className="hidden sm:block overflow-x-auto bg-white rounded-xl shadow">
         <table className="w-full text-sm text-left">
 
-          <thead className="bg-gray-100 text-gray-600">
-            <tr>
+          <thead className=" bg-[#E6F7EF] text-gray-600">
+            <tr className="text-[#6B7280]">
               <th className="p-3">Paciente</th>
               <th className="p-3">Especialidade</th>
               <th className="p-3">Data e Hora</th>
@@ -223,11 +223,11 @@ const appointmentsByMonth = agruparPorMes(usuarios);
             </tr>
           </thead>
 
-          <tbody>
+          <tbody className="bg-gray-50">
             {agendamentos.map((appt: any) => (
               <tr key={appt.id} className="border-t hover:bg-gray-50">
 
-                <td className="p-3 font-medium text-[#0F1720]">
+                <td className="p-3 capitalize font-medium text-[#0F1720]">
                   {appt.userName}
                 </td>
 
