@@ -1,9 +1,19 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/header";
-
-import { Inter } from 'next/font/google'
+import {ToastContainer} from "react-toastify"
+import { Inter, Geist } from 'next/font/google'
 import Footer from "@/components/footer";
+import { cn } from "@/lib/utils";
+
+import { Playfair_Display } from "next/font/google";
+
+const playfair = Playfair_Display({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+});
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const inter = Inter({
   subsets: ['latin'],
@@ -21,14 +31,17 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  
   return (
+    
     <html
-      lang="pt-BR"
-      className={`${inter.className} h-full antialiased max-w-screen-2xl mx-auto`}
+      lang="pt-BR" data-scroll-behavior="smooth"
+      className={cn("h-full", "antialiased", "max-w-screen-2xl", "mx-auto", inter.className, "font-sans", geist.variable, playfair.className)}
     >
       <body className="w-full min-h-full flex flex-col">
-        <Header />
+        <Header/>
         {children}
+        <ToastContainer/>
         <Footer/>
         </body>
     </html>

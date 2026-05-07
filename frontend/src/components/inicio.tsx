@@ -1,9 +1,19 @@
+"use client"
 import clinica from '../../public/Fisioterapia.png';
 import Image from 'next/image';
+import { FaWhatsapp } from "react-icons/fa";
+import { useRouter } from 'next/navigation';
 
 export default function Inicio() {
+  
+    const router = useRouter();
+  
+  function handleEspecialidades(){
+    router.push('/especialidades')
+  }
+
   return (
-    <div id='inicio' className="flex flex-col-reverse lg:flex-row items-center justify-between w-full px-6 lg:px-20 mt-10 lg:mt-20 gap-10">
+    <div id='inicio' className="flex flex-col-reverse mb-10 lg:flex-row items-center justify-between w-full px-6 lg:px-20 mt-10 lg:mt-20 gap-10">
 
       {/* Texto */}
       <nav className="flex flex-col max-w-xl gap-5">
@@ -11,7 +21,7 @@ export default function Inicio() {
           Clínica Especializada
         </span>
 
-        <h1 className="font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mt-3">
+        <h1 className="text-[#0F1720] font-bold text-3xl sm:text-4xl lg:text-5xl leading-tight mt-3">
           Sua saúde e bem-estar em primeiro lugar.
         </h1>
 
@@ -20,13 +30,19 @@ export default function Inicio() {
         </span>
 
         <section className="flex flex-col sm:flex-row items-center gap-3 mt-5">
-          <span className="text-[16px] bg-[#2BAE66] font-semibold text-white rounded-md px-4 py-2 cursor-pointer">
+          <button onClick={handleEspecialidades} 
+           className="text-[16px] bg-[#2BAE66] font-semibold text-white rounded-md px-4 py-2 cursor-pointer">
             Ver Especialidades
-          </span>
+          </button>
 
-          <span className="text-[16px] font-semibold text-black cursor-pointer border border-[#b6b8ba] rounded-md px-4 py-2">
-            Acessar minha conta
-          </span>
+          <a
+  href="https://wa.me/+55081983293125?text=Olá!%20Gostaria%20de%20saber%20mais%20e%20marcar%20uma%20consulta."
+  target="_blank"
+  rel="noopener noreferrer"
+  className="flex gap-2 text-[16px] bg-[#eef1f4c0] font-semibold text-black cursor-pointer border border-[#b6b8ba] rounded-md px-4 py-2"
+>
+  Falar no WhatsApp   <FaWhatsapp size={22}className='text-[#2BAE66]'/>
+</a>
         </section>
       </nav>
 

@@ -2,10 +2,18 @@
 import logo from "../../public/Background.png";
 import Image from "next/image";
 import { useState } from "react";
+import { useAuth,logout } from "@/services/auth";
+import { usePathname } from "next/navigation";
 
 export default function Header() {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("inicio");
+  const [active, setActive] = useState("areadopaciente");
+
+  const {isAuthenticated, loading} = useAuth()
+
+  const pathname = usePathname();
+
+  if (pathname.startsWith("/admin")) return null;
 
   return (
     <header className="w-full bg-[#F7FBFA] border-b border-[#E5E5E5]">
@@ -13,23 +21,20 @@ export default function Header() {
 
         {/* LOGO */}
         <div className="flex items-center gap-1">
-          <Image src={logo} alt="logo" width={28} height={28} />
-          <h1 className="font-bold text-[#0F1720]">Olhar</h1>
-          <span className="font-bold text-[#0F1720]">de</span>
-          <h1 className="font-bold text-[#0F1720]">Fisio</h1>
-        </div>
+  <a href="/" className="flex items-center gap-1">
+
+    <Image src={logo} alt="logo" width={28} height={28} />
+
+<h1 className="font-bold text-[#0F1720] italic font-serif tracking-wide">
+  Olhar <span className="font-bold text-[#141b24] italic font-serif tracking-wide">de Fisio</span>
+</h1>
+
+  </a>
+</div>
 
         {/* MENU DESKTOP */}
         <nav className="hidden md:flex items-center gap-10">
-          <a
-            href="#inicio"
-            onClick={() => setActive("inicio")}
-            className={`font-semibold transition-colors ${
-              active === "inicio" ? "text-[#2BAE66]" : "text-[#0F1720]"
-            }`}
-          >
-            Início
-          </a>
+        
 
           <a
             href="#Area-do-paciente"
@@ -50,6 +55,17 @@ export default function Header() {
           >
             Agendar Consulta
           </a>
+
+     {!loading && isAuthenticated && (
+  <button
+    onClick={logout}
+    className="cursor-pointer font-semibold text-[#0F1720] hover:text-[#2BAE66] transition-colors"
+  >
+    Sair
+  </button>
+)}
+
+           
         </nav>
 
         {/* BOTÃO MOBILE */}
@@ -65,7 +81,7 @@ export default function Header() {
       {open && (
         <nav className="md:hidden flex flex-col gap-4 px-6 pb-4">
           <a
-            href="#inicio"
+            href="/inicio"
             onClick={() => {
               setActive("inicio");
               setOpen(false);
@@ -97,11 +113,24 @@ export default function Header() {
               setOpen(false);
             }}
             className={`font-semibold ${
-              active === "agendamento" ? "text-[#2BAE66]" : "text-[#0F1720]"
+              active === "agendamento" ? "cursor-pointer text-[#2BAE66]" : "text-[#0F1720]"
             }`}
           >
             Agendar Consulta
           </a>
+
+          {!loading && isAuthenticated && (
+  <button
+    onClick={() => {
+      logout();
+      setOpen(false);
+    }}
+    className="font-semibold text-[#0F1720] hover:text-[#2BAE66]"
+  >
+    Sair
+  </button>
+)}
+
         </nav>
       )}
     </header>

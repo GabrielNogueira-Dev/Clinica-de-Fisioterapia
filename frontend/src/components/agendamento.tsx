@@ -1,13 +1,25 @@
 "use client";
 
-import pilates from "../../public/pilates.png";
-import ventosaterapia from "../../public/ventosaterapia.png";
-import acumpuntura from "../../public/acumpuntura.png";
-import Image from "next/image";
 import { useState } from "react";
+import Especialidade from "./agendamentos/especialidade";
+import DataHora from "../components/agendamentos/dataehora";
+import { useAuth } from "@/services/auth";
+import { api } from "@/services/api";
+import { useRouter } from "next/navigation";
+import {toast} from "react-toastify"
+import {RefreshCwIcon} from "lucide-react";
 
 export default function Agendamento() {
+  const { isAuthenticated, loading } = useAuth();
+
   const [step, setStep] = useState(1);
+
+  // ESTADOS DO AGENDAMENTO
+  const [especialidade, setEspecialidade] = useState<string>("");
+  const [dataSelecionada, setDataSelecionada] = useState("");
+  const [horarioSelecionado, setHorarioSelecionado] = useState("");
+
+const router = useRouter();
 
   function nextStep() {
     if (step < 3) setStep(step + 1);
@@ -17,180 +29,189 @@ export default function Agendamento() {
     if (step > 1) setStep(step - 1);
   }
 
+ const serviceTypeIds = {
+  VENTOSATERAPIA: "c626ca90-b438-4f59-bcd1-cf8aa16aec9d",
+  ACUPUNTURA: "5ed3dd87-93cd-4f19-9639-378bd2d305aa",
+  PILATES: "eab56c8b-7612-4cf1-b5cb-4d507d00617b",
+};
+
+  async function handleConfirmar() {
+    try {
+const dateTime = new Date(
+        `${dataSelecionada}T${horarioSelecionado}:00`
+      );
+
+      await api.post("/appointments", {
+  description: "Agendamento de sessão",
+  scheduledAt: dateTime,
+  serviceTypeID: serviceTypeIds[especialidade as keyof typeof serviceTypeIds],
+  type: especialidade,
+  status: "CONFIRMED",
+});
+      
+      toast.success("Agendamento confirmado!")
+   
+    } catch (err) {
+      console.log(err);
+      toast.error("Erro ao agendar!")
+    }
+  }
+
+   function refreshFunction(){
+     setEspecialidade("")
+    setDataSelecionada("")
+    setHorarioSelecionado("")
+    setStep(1) //volta ao step 1 de inicio de confirmacao
+    window.location.reload()
+  }
+
+  if (loading) return <div>Carregando...</div>;
+  if (!isAuthenticated) return <div className=" mt-10 mb-10 flex flex-col items-center justify-center w-full min-h-[60vh] px-6">
+  
+  <div id="Agendamento" className="bg-white shadow-lg border border-gray-200 rounded-xl p-10 max-w-md w-full text-center animate-fadeIn">
+    
+    {/* Ícone */}
+    <div className="mt-2 w-16 h-16 mx-auto mb-4 flex items-center justify-center rounded-full bg-[#E6F7EF]">
+      <span className="text-[#2BAE66] text-3xl">🔒</span>
+    </div>
+
+    {/* Título */}
+    <h2 className="text-2xl font-bold text-[#0F1720]">
+      Login necessário
+    </h2>
+
+    {/* Texto */}
+    <p className="text-[#6B7280] mt-3 leading-relaxed mb-5">
+      Para agendar sua consulta, você precisa acessar sua conta na Área do Paciente.
+    </p>
+
+    {/* Botão para direcionar */}
+   
+   <div className="mb-5">
+     <a
+  href="#Area-do-paciente"
+  className="
+    mt-10 w-full max-w-xs 
+    bg-[#2BAE66] text-white font-semibold 
+    py-3.5 px-6 rounded-lg 
+    shadow-md shadow-[#2BAE66]/20 
+    hover:bg-[#249a59] hover:shadow-lg 
+    transition-all duration-300 
+    text-center p-1.5
+  "
+>
+  Fazer Login
+</a>
+   </div>
+
+  </div>
+
+</div>;
+
   return (
     <div className="flex flex-col w-full">
-      {/* Texto explicativo */}
-      <section className="flex flex-col w-full p-2">
-        <nav
-          id="Agendamento"
-          className="flex flex-col w-full text-center justify-center items-center mt-15"
-        >
-          <h1 className="text-[#0F1720] font-bold md:text-2xl">
-            Agendar Consulta
-          </h1>
-          <span className="mt-5 text-[#6B7280] font-medium">
-            Siga os passos abaixo para selecionar o serviço desejado e o melhor
-            horário para você.
-          </span>
-        </nav>
-      </section>
 
-      {/* Stepper Dinâmico */}
+      {/* STEPPER */}
       <section className="flex justify-center mt-10">
         <div className="flex items-center gap-4">
+
           {/* PASSO 1 */}
           <div className="flex flex-col items-center">
-            <div
-              className={`w-8 h-8 flex items-center justify-center rounded-full border-2 font-semibold
-                ${
-                  step >= 1
-                    ? "bg-[#2BAE66] text-white border-[#2BAE66]"
-                    : "border-gray-300 text-gray-400"
-                }`}
-            >
+            <div className={`w-8 h-8 flex items-center justify-center rounded-full border-2 font-semibold
+              ${step >= 1 ? "bg-[#2BAE66] text-white border-[#2BAE66]" : "border-gray-300 text-gray-400"}`}>
               1
             </div>
-            <span
-              className={`text-xs mt-1 ${
-                step >= 1 ? "text-[#2BAE66]" : "text-gray-400"
-              }`}
-            >
+            <span className={`text-xs mt-1 ${step >= 1 ? "text-[#2BAE66]" : "text-gray-400"}`}>
               Especialidade
             </span>
           </div>
 
-          <div
-            className={`h-1 w-10 ${
-              step >= 2 ? "bg-[#2BAE66]" : "bg-gray-300"
-            }`}
-          ></div>
+          <div className={`h-1 w-10 ${step >= 2 ? "bg-[#2BAE66]" : "bg-gray-300"}`}></div>
 
           {/* PASSO 2 */}
           <div className="flex flex-col items-center">
-            <div
-              className={`w-8 h-8 flex items-center justify-center rounded-full border-2 font-semibold
-                ${
-                  step >= 2
-                    ? "bg-[#2BAE66] text-white border-[#2BAE66]"
-                    : "border-gray-300 text-gray-400"
-                }`}
-            >
+            <div className={`w-8 h-8 flex items-center justify-center rounded-full border-2 font-semibold
+              ${step >= 2 ? "bg-[#2BAE66] text-white border-[#2BAE66]" : "border-gray-300 text-gray-400"}`}>
               2
             </div>
-            <span
-              className={`text-xs mt-1 ${
-                step >= 2 ? "text-[#2BAE66]" : "text-gray-400"
-              }`}
-            >
+            <span className={`text-xs mt-1 ${step >= 2 ? "text-[#2BAE66]" : "text-gray-400"}`}>
               Horário
             </span>
           </div>
 
-          <div
-            className={`h-1 w-10 ${
-              step >= 3 ? "bg-[#2BAE66]" : "bg-gray-300"
-            }`}
-          ></div>
+          <div className={`h-1 w-10 ${step >= 3 ? "bg-[#2BAE66]" : "bg-gray-300"}`}></div>
 
           {/* PASSO 3 */}
           <div className="flex flex-col items-center">
-            <div
-              className={`w-8 h-8 flex items-center justify-center rounded-full border-2 font-semibold
-                ${
-                  step === 3
-                    ? "bg-[#2BAE66] text-white border-[#2BAE66]"
-                    : "border-gray-300 text-gray-400"
-                }`}
-            >
+            <div className={`w-8 h-8 flex items-center justify-center rounded-full border-2 font-semibold
+              ${step === 3 ? "bg-[#2BAE66] text-white border-[#2BAE66]" : "border-gray-300 text-gray-400"}`}>
               3
             </div>
-            <span
-              className={`text-xs mt-1 ${
-                step === 3 ? "text-[#2BAE66]" : "text-gray-400"
-              }`}
-            >
+            <span className={`text-xs mt-1 ${step === 3 ? "text-[#2BAE66]" : "text-gray-400"}`}>
               Confirmação
             </span>
           </div>
+
         </div>
       </section>
 
-      {/* CONTEÚDOS DOS PASSOS */}
-      <section className="flex flex-col w-full justify-center items-center mt-10 gap-5">
-        {/* PASSO 1 — Especialidade */}
+      {/* CONTEÚDOS */}
+      <section id="Agendamento"
+       className="flex flex-col w-full justify-center items-center mt-10 gap-5">
+
         {step === 1 && (
-          <>
-            <nav className="flex items-center gap-3">
-              <span className="flex items-center justify-center w-8 h-8 rounded-full bg-[#2BAE66] text-white text-sm font-semibold">
-                1
-              </span>
-
-              <h3 className="font-medium text-[#0F1720]">
-                Selecione a Especialidade
-              </h3>
-            </nav>
-
-            <section className="flex flex-col md:flex-row w-[70%] justify-center items-start gap-10 mt-2">
-              <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 md:w-48 min-h-[240px] shadow-lg shadow-black/10 cursor-pointer">
-                <Image
-                  src={pilates}
-                  alt="pilates icon"
-                  className="bg-[#2BAE66] rounded-full w-16 h-16 p-3 mb-5"
-                  priority
-                />
-                <span className="font-bold text-[#0F1720]">Pilates</span>
-                <p className="mt-1 text-[#6B7280] text-sm">
-                  Sessão focada em postura e flexibilidade do paciente.
-                </p>
-              </nav>
-
-              <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 md:w-48 min-h-[240px] shadow-lg shadow-black/10 cursor-pointer">
-                <Image
-                  src={ventosaterapia}
-                  alt="ventosaterapia icon"
-                  className="bg-[#2BAE66] rounded-full w-16 h-16 p-3 mb-5"
-                  priority
-                />
-                <span className="font-bold text-[#0F1720]">Ventosaterapia</span>
-                <p className="mt-1 text-[#6B7280] text-sm">
-                  Alívio de dores musculares através de sucção terapêutica.
-                </p>
-              </nav>
-
-              <nav className="flex flex-col items-center text-center border border-[#6B7280]/20 rounded-xl p-5 md:w-48 min-h-[240px] shadow-lg shadow-black/10 cursor-pointer">
-                <Image
-                  src={acumpuntura}
-                  alt="acupuntura icon"
-                  className="bg-[#2BAE66] rounded-full w-16 h-16 p-3 mb-5"
-                  priority
-                />
-                <span className="font-bold text-[#0F1720]">Acupuntura</span>
-                <p className="mt-1 text-[#6B7280] text-sm">
-                  Equilíbrio energético e tratamento de diversas patologias.
-                </p>
-              </nav>
-            </section>
-          </>
+          <Especialidade setEspecialidade={setEspecialidade} />
         )}
 
-        {/* PASSO 2 — Horário */}
         {step === 2 && (
-          <div className="text-center text-[#0F1720] font-medium">
-            <h3 className="text-xl">Selecione o horário</h3>
-            <p className="text-[#6B7280] mt-2">
-              Aqui você vai escolher o melhor horário disponível.
-            </p>
-          </div>
+          <DataHora
+            setDataSelecionada={setDataSelecionada}
+            setHorarioSelecionado={setHorarioSelecionado}
+          
+          />
         )}
 
-        {/* PASSO 3 — Confirmação */}
         {step === 3 && (
-          <div className="text-center text-[#0F1720] font-medium">
-            <h3 className="text-xl">Confirme sua consulta</h3>
-            <p className="text-[#6B7280] mt-2">
-              Revise os dados e finalize o agendamento.
-            </p>
-          </div>
+      <div className="text-center text-[#0F1720] font-medium 
+                bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+
+  {/* Título */}
+  <h3 className=" mb-2 text-2xl font-bold flex items-center justify-center gap-2 text-[#0F1720]">
+    🗓️ Confirme sua consulta
+  </h3>
+
+  {/* Informações */}
+  <div className="mt-6 space-y-3 text-[16px]">
+    <p>
+      <span className="font-bold text-[#2BAE66]">Especialidade:</span> {especialidade}
+    </p>
+    <p>
+      <span className="font-bold text-[#2BAE66]">Data:</span> {dataSelecionada}
+    </p>
+    <p>
+      <span className="font-bold text-[#2BAE66]">Horário:</span> {horarioSelecionado}
+    </p>
+  </div>
+
+  {/* Botão */}
+  <div >
+    <button
+      onClick={handleConfirmar}
+      className=" cursor-pointer
+        mt-2 p-3 rounded-lg 
+        bg-[#2BAE66] hover:bg-[#249a59] 
+        text-white font-semibold text-lg
+        shadow-md shadow-[#2BAE66]/30 
+        transition-all duration-300
+      "
+    >
+      Confirmar Agendamento
+    </button>
+ <button onClick={refreshFunction} className=" bg-[#2BAE66] p-3 rounded-3xl hover:transition-all duration-1000 hover:rotate-360  text-white cursor-pointer ml-3 "> <RefreshCwIcon size={18}/> </button>
+        
+  </div>
+</div>
+
         )}
 
         {/* BOTÕES */}
@@ -198,7 +219,7 @@ export default function Agendamento() {
           {step > 1 && (
             <button
               onClick={prevStep}
-              className="px-4 py-2 rounded-lg border border-gray-300 text-gray-600"
+              className="cursor-pointer px-4 py-2 rounded-lg border mb-5 border-gray-300 text-gray-600"
             >
               Voltar
             </button>
@@ -207,12 +228,13 @@ export default function Agendamento() {
           {step < 3 && (
             <button
               onClick={nextStep}
-              className="px-4 py-2 rounded-lg bg-[#2BAE66] text-white font-semibold"
+              className="cursor-pointer px-4 py-2 rounded-lg mb-5 bg-[#2BAE66] text-white font-semibold"
             >
               Avançar
             </button>
           )}
         </div>
+
       </section>
     </div>
   );
