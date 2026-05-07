@@ -5,9 +5,12 @@ import logo from "../../../public/Background.png";
 import { logout } from "@/services/auth";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { useState } from "react";
+import { Menu } from "lucide-react";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false); // mobile começa fechado
 
   function linkClass(path: string) {
     return `font-semibold p-2 rounded-md transition ${
@@ -18,40 +21,60 @@ export default function AdminSidebar() {
   }
 
   return (
-    <aside className="p-6 w-64 bg-white text-[#6B7280] flex flex-col border-r border-[#d9daddd9]">
+    <>
+      {/* BOTÃO MOBILE */}
+      <button
+        onClick={() => setOpen(true)}
+        className="md:hidden fixed top-4 left-4 z-50 bg-white p-2 rounded-md shadow"
+      >
+        <Menu size={20} />
+      </button>
 
-      {/* LOGO */}
-    <Link href="/">
-      <div  className="flex flex-row gap-1 mb-7 items-center">
-        <Image src={logo} alt="logo" width={24} height={24} />
-        <h1 className="font-bold italic font-serif tracking-wide text-[#0F1720]">
-          Olhar <span>de Fisio</span>
-        </h1>
-      </div>
-    </Link>
+      {/* OVERLAY MOBILE */}
+      {open && (
+        <div
+          onClick={() => setOpen(false)}
+          className="md:hidden fixed inset-0 bg-black/40 z-40"
+        />
+      )}
 
-      {/* MENU */}
-      <nav className="flex flex-col gap-2">
-        <Link href="/admin" className={linkClass("/admin")}>
-          Dashboard
+     <aside
+  className={`fixed md:static z-50 top-0 left-0 h-screen w-64 bg-white text-[#6B7280] flex flex-col border-r 
+ border-[#d9daddd9] transform transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full md:translate-x-0"}`}
+>
+        {/* LOGO */}
+        <Link href="/" className="flex gap-2 items-center mb-7 p-6">
+          <Image src={logo} alt="logo" width={24} height={24} />
+          <h1 className="font-bold italic font-serif text-[#0F1720]">
+            Olhar <span>de Fisio</span>
+          </h1>
         </Link>
 
-        <Link href="/admin/users" className={linkClass("/admin/users")}>
-          Usuários
-        </Link>
+       {/* MENU */}
+    <nav className="flex flex-col gap-2 px-6">
+      <Link href="/admin" className={linkClass("/admin")}>
+        Dashboard
+      </Link>
 
-        <Link href="/admin/appointments" className={linkClass("/admin/appointments")}>
-          Agendamentos
-        </Link>
-      </nav>
+      <Link href="/admin/users" className={linkClass("/admin/users")}>
+        Usuários
+      </Link>
 
-      {/* LOGOUT */}
+      <Link href="/admin/appointments" className={linkClass("/admin/appointments")}>
+        Agendamentos
+      </Link>
+    </nav>
+
+    {/* ESPAÇADOR + LOGOUT */}
+    <div className="mt-auto p-6">
       <button
         onClick={logout}
-        className="mt-auto bg-red-500 hover:bg-red-600 text-white p-2 rounded-md"
+        className="w-full bg-red-500 hover:bg-red-600 text-white p-2 rounded-md"
       >
         Sair
       </button>
-    </aside>
+    </div>
+      </aside>
+    </>
   );
 }

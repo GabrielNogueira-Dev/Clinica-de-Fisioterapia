@@ -5,7 +5,12 @@ import { useAuth, logout } from "@/services/auth";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 
-import { CalendarCheck, User, UserCheck2, UserPlus, UserRoundMinus } from "lucide-react";
+import {
+  CalendarCheck,
+  UserCheck2,
+  UserCircle2,
+  UserRoundMinus,
+} from "lucide-react";
 
 interface User {
   id: string;
@@ -21,10 +26,10 @@ export default function Admin() {
 
   const [user, setUser] = useState<User | null>(null);
   const [appointments, setAppointments] = useState<any[]>([]);
+  const [usuarios, setUsuarios] = useState<any[]>([]);
 
   const totalAgendamentos = appointments.length;
 
-  // buscar dados do usuário logado
   async function detalheAdmin() {
     try {
       const response = await api.get("/me");
@@ -36,7 +41,6 @@ export default function Admin() {
     }
   }
 
-  // buscar agendamentos
   async function detalheGeral() {
     try {
       const response = await api.get("/appointments");
@@ -53,15 +57,25 @@ export default function Admin() {
     }
   }
 
-// LÓGICA DE USUÁRIOS (BASEADA EM APPOINTMENTS)
+  async function detalheUsuarios() {
+    try {
+      const listaUsuarios = await api.get("/ursersDetails");
+      const data = listaUsuarios.data?.data || listaUsuarios.data;
+      setUsuarios(data);
+      console.log("Lista de usuários!!!!!:", data);
+    } catch (err) {
+      console.log("Error ao carregar usuários", err);
+    }
+  }
 
-//  1. Pega todos os usuários que aparecem nos agendamentos,total de usuario com agendamento marcado (sem duplicacao por id)
-const uniqueUsers = Array.from( new Map( appointments.map((agendamento: any) => [
-      agendamento.user.id, // chave única (evita duplicação por ID)
-      agendamento.user     // valor (objeto do usuário)
-    ])).values() );
-
-const totalUsuarioSemAgendamento = uniqueUsers.length;
+  const uniqueUsers = Array.from(
+    new Map(
+      appointments.map((agendamento: any) => [
+        agendamento.user.id,
+        agendamento.user,
+      ])
+    ).values()
+  );
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -71,50 +85,80 @@ const totalUsuarioSemAgendamento = uniqueUsers.length;
     if (isAuthenticated) {
       detalheAdmin();
       detalheGeral();
+      detalheUsuarios();
     }
   }, [loading, isAuthenticated]);
 
   if (loading) return <p>Carregando...</p>;
 
   return (
-    <div className="w-full p-15">
-      <div className="mb-10">
-        <h1 className="text-2xl text-black font-bold mb-2">
-          Painel Admin
-        </h1>
-        <p>Visão geral dos agendamentos da clínica.</p>
+    <div className="w-full p-4 sm:p-10 lg:p-15">
+
+      {/* HEADER */}
+      <div className="flex flex-col sm:flex-row sm:justify-between gap-4 mb-6">
+
+        <div className="mt-7">
+          <h1 className="text-xl sm:text-2xl text-black font-bold mb-1">
+            Painel Admin
+          </h1>
+          <p className="text-sm sm:text-base text-gray-500">
+            Visão geral dos agendamentos da clínica.
+          </p>
+        </div>
+
+        <div className="flex items-center gap-2 bg-gray-200 rounded-md h-10 px-3 mt-7">
+          <UserCircle2 size={18} />
+          <p className="text-black font-bold text-sm sm:text-base">
+            {usuarios.length}
+          </p>
+        </div>
+
       </div>
 
+      {/* CARDS */}
       {user ? (
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 lg:gap-10">
 
           {/* CARD 1 */}
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-gray-500 flex gap-2 items-center">
-              Agendamentos Confirmados <CalendarCheck size={20} />
+          <div className="bg-white p-3 sm:p-5 lg:p-6 rounded-xl shadow flex flex-col justify-between gap-2">
+            <h2 className="text-gray-500 flex items-center gap-1 text-[11px] sm:text-sm">
+              Agendamentos Confirmados <CalendarCheck size={16} className="sm:w-5 sm:h-5" />
             </h2>
-            <p className="text-2xl font-bold text-[#0F1720] mt-2">
+            <p className="text-base sm:text-xl lg:text-2xl font-bold text-[#0F1720]">
               {totalAgendamentos}
             </p>
           </div>
 
           {/* CARD 2 */}
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-gray-500 flex gap-2 items-center">
-             clientes com agendamento marcado <UserCheck2 size={20} />
+          <div className="bg-white p-3 sm:p-5 lg:p-6 rounded-xl shadow flex flex-col justify-between gap-2">
+            <h2 className="text-gray-500 flex items-center gap-1 text-[11px] sm:text-sm">
+              Clientes com agendamento <UserCheck2 size={16} className="sm:w-5 sm:h-5" />
             </h2>
-            <p className="text-2xl font-bold text-[#0F1720] mt-2">
+            <p className="text-base sm:text-xl lg:text-2xl font-bold text-[#0F1720]">
               {uniqueUsers.length}
             </p>
           </div>
 
-          {/* CARD 3 (extra útil) */}
-          <div className="bg-white p-6 rounded-xl shadow">
-            <h2 className="text-gray-500 flex gap-2 items-center">
-              Clientes sem agendamento <UserRoundMinus size = {20} />
+          {/* CARD 3 */}
+          <div className="bg-white p-3 sm:p-5 lg:p-6 rounded-xl shadow flex flex-col justify-between gap-2">
+            <h2 className="text-gray-500 flex items-center gap-1 text-[11px] sm:text-sm">
+              Clientes sem agendamento <UserRoundMinus size={16} className="sm:w-5 sm:h-5" />
             </h2>
-            <p className="text-2xl font-bold text-[#0F1720] mt-2">
-             {totalUsuarioSemAgendamento}
+            <p className="text-base sm:text-xl lg:text-2xl font-bold text-[#0F1720]">
+              {usuarios.length - uniqueUsers.length}
+            </p>
+          </div>
+
+          {/* CARD 4 */}
+          <div className="bg-white p-3 sm:p-5 lg:p-6 rounded-xl shadow flex flex-col justify-between gap-2">
+            <h2 className="text-gray-500 flex items-center gap-1 text-[11px] sm:text-sm">
+              Taxa de ocupação <CalendarCheck size={16} className="sm:w-5 sm:h-5" />
+            </h2>
+            <p className="text-base sm:text-xl lg:text-2xl font-bold text-[#0F1720]">
+              {usuarios.length > 0
+                ? ((uniqueUsers.length / usuarios.length) * 100).toFixed(0)
+                : 0}
+              %
             </p>
           </div>
 
@@ -122,6 +166,115 @@ const totalUsuarioSemAgendamento = uniqueUsers.length;
       ) : (
         <p>Carregando dados do usuário...</p>
       )}
+      
+     {/* LISTA DE AGENDAMENTOS */}
+<div className="mt-10">
+  <h1 className="text-black font-bold mb-4">
+    Lista de agendamentos
+  </h1>
+
+  {/* DESKTOP TABLE */}
+  <div className="hidden sm:block overflow-x-auto bg-white rounded-xl shadow">
+
+    <table className="w-full text-sm text-left">
+
+      <thead className="bg-gray-100 text-gray-600">
+        <tr>
+          <th className="p-3">Paciente</th>
+          <th className="p-3">Especialidade</th>
+          <th className="p-3">Data e Hora</th>
+          <th className="p-3">Status</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {usuarios.map((user: any) =>
+          user.appointments.map((appt: any) => (
+            <tr key={appt.id} className="border-t hover:bg-gray-50">
+
+              <td className="p-3 font-medium text-[#0F1720]">
+                {user.name}
+              </td>
+
+              <td className="p-3 text-gray-600">
+                {appt.serviceType?.name}
+              </td>
+
+              <td className="p-3 text-gray-600">
+                {new Date(appt.scheduledAt).toLocaleDateString("pt-PT")} às{" "}
+                {new Date(appt.scheduledAt).toLocaleTimeString("pt-PT", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })}
+              </td>
+
+              <td className="p-3">
+                <span
+                  className={`px-2 py-1 rounded text-xs font-semibold ${
+                    appt.status === "CONFIRMED"
+                      ? "bg-green-100 text-green-700"
+                      : appt.status === "CANCELLED"
+                      ? "bg-red-100 text-red-700"
+                      : "bg-yellow-100 text-yellow-700"
+                  }`}
+                >
+                  {appt.status}
+                </span>
+              </td>
+
+            </tr>
+          ))
+        )}
+      </tbody>
+
+    </table>
+  </div>
+
+  {/* MOBILE CARDS */}
+  <div className="sm:hidden flex flex-col gap-4">
+
+    {usuarios.map((user: any) =>
+      user.appointments.map((appt: any) => (
+        <div
+          key={appt.id}
+          className="bg-white shadow rounded-xl p-4 border"
+        >
+
+          <p className="font-semibold text-[#0F1720]">
+            {user.name}
+          </p>
+
+          <p className="text-sm text-gray-600 mt-1">
+            {appt.serviceType?.name}
+          </p>
+
+          <p className="text-sm text-gray-500 mt-1">
+            {new Date(appt.scheduledAt).toLocaleDateString("pt-PT")} às{" "}
+            {new Date(appt.scheduledAt).toLocaleTimeString("pt-PT", {
+              hour: "2-digit",
+              minute: "2-digit",
+            })}
+          </p>
+
+          <span
+            className={`inline-block mt-2 px-2 py-1 rounded text-xs font-semibold ${
+              appt.status === "CONFIRMED"
+                ? "bg-green-100 text-green-700"
+                : appt.status === "CANCELLED"
+                ? "bg-red-100 text-red-700"
+                : "bg-yellow-100 text-yellow-700"
+            }`}
+          >
+            {appt.status}
+          </span>
+
+        </div>
+      ))
+    )}
+
+  </div>
+</div>
+
     </div>
   );
 }
