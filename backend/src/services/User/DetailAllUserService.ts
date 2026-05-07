@@ -8,7 +8,6 @@ class DetailAllUserService {
         select: {
           id: true,
           name: true,
-          email: true,
           createdAt: true,
 
           appointments: {
