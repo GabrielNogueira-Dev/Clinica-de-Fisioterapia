@@ -14,7 +14,9 @@ interface User {
 
 export default function Usuarios() {
   const [users, setUsers] = useState<User[]>([]);
-    const [appointments, setAppointments] = useState<any[]>([]);
+  const [appointments, setAppointments] = useState<any[]>([]);
+  const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
 
   async function listarUsuarios() {
     try {
@@ -22,16 +24,16 @@ export default function Usuarios() {
       const data = response.data?.data || response.data;
 
       setUsers(data);
-      console.log(data);
-
     } catch (err: any) {
       if (err.response?.status === 401) {
         logout();
       }
+    } finally {
+      setLoading(false);
     }
   }
 
-   async function detalheGeral() {
+  async function detalheGeral() {
     try {
       const response = await api.get("/appointments");
 
@@ -50,15 +52,24 @@ export default function Usuarios() {
   useEffect(() => {
     listarUsuarios();
     detalheGeral();
-  }, []); 
+  }, []);
 
-     function userTemAgendamento(userId: string) {
-  return appointments.some(
-    (appt) => appt.user.id === userId
+  function userTemAgendamento(userId: string) {
+    return appointments.some(
+      (appt) => appt.user?.id === userId
+    );
+  }
+
+  const filteredUsers = users.filter((user) =>
+    user.name.toLowerCase().includes(search.toLowerCase())
   );
+
+if (loading) {
+  return <p className="p-6 text-gray-500">Carregando usuários...</p>;
 }
 
   return (
+
     <div className="w-full p-4 sm:p-10 lg:p-15">
 
       <h1 className="text-2xl text-black font-bold mb-2">
@@ -68,6 +79,17 @@ export default function Usuarios() {
       <p className="text-gray-500">
         Esta é a página de usuários. Aqui você pode gerenciar os usuários do sistema.
       </p>
+
+      {/* INPUT DE PESQUISA */}
+      <div className="mt-6 mb-4">
+        <input
+          type="text"
+          placeholder="Digite o nome do usuário"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full sm:w-1/2 p-2 border rounded-lg outline-none focus:ring-2 focus:ring-green-200"
+        />
+      </div>
 
       {/* TABELA DESKTOP */}
       <div className="hidden sm:block overflow-x-auto bg-white rounded-xl shadow mt-10">
@@ -84,50 +106,50 @@ export default function Usuarios() {
             </tr>
           </thead>
 
-         
-<tbody className="bg-gray-50">
+          <tbody className="bg-gray-50">
 
-  {users.map((user) => (
-    <tr key={user.id} className="border-t hover:bg-gray-100 transition">
+            {filteredUsers.map((user) => (
+              <tr
+                key={user.id}
+                className="border-t hover:bg-gray-100 transition"
+              >
 
-      <td className="p-3 font-medium text-[#0F1720]">
-        {user.name}
-      </td>
+                <td className="p-3 font-medium text-[#0F1720]">
+                  {user.name}
+                </td>
 
-      <td className="p-3 text-gray-600">
-        {user.email}
-      </td>
+                <td className="p-3 text-gray-600">
+                  {user.email}
+                </td>
 
-      <td className="p-3 text-gray-600">
-        {user.role === "ADMIN" ? "Administrador" : "Paciente"}
-      </td>
+                <td className="p-3 text-gray-600">
+                  {user.role === "ADMIN"
+                    ? "Administrador"
+                    : "Paciente"}
+                </td>
 
-      <td className="p-3 text-gray-600">
-        {user.createdAt
-          ? new Date(user.createdAt).toLocaleDateString("pt-PT")
-          : "Data não disponível"}
-      </td>
+                <td className="p-3 text-gray-600">
+                  {user.createdAt
+                    ? new Date(user.createdAt).toLocaleDateString("pt-PT")
+                    : "Data não disponível"}
+                </td>
 
-      <td className="p-3">
-        {userTemAgendamento(user.id) ? (
-          <span className="px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">
-            Ativo
-          </span>
-        ) : (
-          <span className="px-2 py-1 rounded text-xs font-semibold bg-red-100 text-red-700">
-            Inativo
-          </span>
-        )}
-      </td>
+                <td className="p-3">
+                  {userTemAgendamento(user.id) ? (
+                    <span className="px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">
+                      Ativo
+                    </span>
+                  ) : (
+                    <span className="px-2 py-1 rounded text-xs font-semibold bg-red-100 text-red-700">
+                      Inativo
+                    </span>
+                  )}
+                </td>
 
-    </tr>
-  ))}
+              </tr>
+            ))}
 
-</tbody>
-
-        
-
-             
+          </tbody>
 
         </table>
 
