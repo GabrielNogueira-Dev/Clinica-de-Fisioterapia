@@ -33,9 +33,7 @@ export default function Admin() {
   const [mesAberto, setMesAberto] = useState<string | null>(null);
 
 function abrirFecharMes(mes: string) {
-  setMesAberto((mesAtual) =>
-    mesAtual === mes ? null : mes
-  );
+  setMesAberto((mesAtual) => mesAtual === mes ? null : mes );
 }
 
   async function detalheAdmin() {
@@ -118,6 +116,7 @@ function abrirFecharMes(mes: string) {
       meses[chaveMes].push({
         ...appt,
         userName: user.name,
+        userEmail: user.email
       });
     }); // retorna um array de agendamentos com o nome do usuário Exemplo: [{id: 1, scheduledAt: "2026-05-10T14:00:00Z", userName: "João"}, ...]
   });
@@ -240,6 +239,7 @@ const appointmentsByMonth = agruparPorMes(usuarios);
                 <thead className="bg-[#E6F7EF] text-gray-600">
                   <tr className="text-[#6B7280]">
                     <th className="p-3">Paciente</th>
+                    <th className="p-3">Email</th>
                     <th className="p-3">Especialidade</th>
                     <th className="p-3">Data e Hora</th>
                     <th className="p-3">Status</th>
@@ -255,6 +255,10 @@ const appointmentsByMonth = agruparPorMes(usuarios);
 
                       <td className="p-3 capitalize font-medium text-[#0F1720]">
                         {appt.userName}
+                      </td>
+
+                      <td className="p-3 capitalize font-medium text-[#0F1720]">
+                        {appt.userEmail}
                       </td>
 
                       <td className="p-3 text-gray-600">
@@ -305,15 +309,19 @@ const appointmentsByMonth = agruparPorMes(usuarios);
                 >
 
                   <p className="font-semibold text-[#0F1720]">
-                    {appt.userName}
+                   Paciente: {appt.userName}
+                  </p>
+
+                    <p className="font-semibold text-[#0F1720]">
+                    Email: {appt.userEmail}
                   </p>
 
                   <p className="text-sm text-gray-600 mt-1">
-                    {appt.serviceType?.name}
+                   <span className="text-black font-semibold">Serviço:</span> {appt.serviceType?.name}
                   </p>
 
                   <p className="text-sm text-gray-500 mt-1">
-                    {new Date(
+                   <span className="text-black font-semibold">Horário: </span>{new Date(
                       appt.scheduledAt
                     ).toLocaleDateString("pt-PT")}{" "}
                     às{" "}
@@ -326,7 +334,7 @@ const appointmentsByMonth = agruparPorMes(usuarios);
                   </p>
 
                   <span
-                    className={`inline-block mt-2 px-2 py-1 rounded text-xs font-semibold ${
+                    className={`inline-block mt-2 px-3 py-1 rounded-md text-xs font-semibold ${
                       appt.status === "CONFIRMED"
                         ? "bg-green-100 text-green-700"
                         : appt.status === "CANCELLED"

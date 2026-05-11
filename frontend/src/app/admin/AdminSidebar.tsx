@@ -6,12 +6,12 @@ import { logout } from "@/services/auth";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useState } from "react";
-import { Menu } from "lucide-react";
+import { Menu,LogOut } from "lucide-react";
 
 export default function AdminSidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false); // mobile começa fechado
-
+  
   function linkClass(path: string) {
     return `font-semibold p-2 rounded-md transition ${
       pathname === path
@@ -69,9 +69,9 @@ export default function AdminSidebar() {
     <div className="mt-auto p-6">
       <button
         onClick={logout}
-        className="w-full bg-red-500 hover:bg-red-600 text-white p-2 rounded-md"
+        className="cursor-pointer w-full bg-red-500 hover:bg-red-600 text-white p-2 rounded-md"
       >
-        Sair
+        Sair <LogOut size={16} className="inline-block ml-1" />
       </button>
     </div>
       </aside>
