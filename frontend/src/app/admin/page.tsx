@@ -12,7 +12,7 @@ import {
   UsersIcon,
 } from "lucide-react";
 
-interface User {
+export interface User {
   id: string;
   name: string;
   email: string;
@@ -217,8 +217,12 @@ const appointmentsByMonth = agruparPorMes(usuarios);
         {/* HEADER DO MÊS */}
         <button
           onClick={() => abrirFecharMes(mes)}
-          className="w-full flex items-center gap-3 bg-gray-100 px-4 py-3 rounded-lg mb-3 hover:bg-gray-200 transition"
+          className="cursor-pointer w-full flex items-center gap-3 bg-gray-100 px-4 py-3 rounded-lg mb-3 hover:bg-gray-200 transition"
         >
+
+               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+
+
           <h2 className="first-letter:uppercase text-md font-bold text-black">
             {mes}
           </h2>
