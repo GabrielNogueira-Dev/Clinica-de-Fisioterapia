@@ -61,7 +61,7 @@ useEffect(() => {
   if (user && user.role !== "ADMIN") {
     router.replace("/login");
   }
-}, [user]);
+}, []);
 
   async function detalheGeral() {
     try {

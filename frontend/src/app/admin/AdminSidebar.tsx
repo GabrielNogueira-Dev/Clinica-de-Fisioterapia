@@ -11,7 +11,7 @@ import { Menu,LogOut } from "lucide-react";
 export default function AdminSidebar() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false); // mobile começa fechado
-  
+ 
   function linkClass(path: string) {
     return `font-semibold p-2 rounded-md transition ${
       pathname === path
@@ -20,6 +20,7 @@ export default function AdminSidebar() {
     }`;
   }
 
+ 
   return (
     <>
       {/* BOTÃO MOBILE */}
