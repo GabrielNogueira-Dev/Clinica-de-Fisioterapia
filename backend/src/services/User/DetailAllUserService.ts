@@ -9,6 +9,8 @@ class DetailAllUserService {
           id: true,
           name: true,
           createdAt: true,
+          email:true,
+          role:true,
 
           appointments: {
             select: {
@@ -17,7 +19,7 @@ class DetailAllUserService {
               type: true,
               status: true,
               serviceType: true,
-              scheduledAt: true
+              scheduledAt: true,
             }
           }
         }
