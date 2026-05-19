@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import email from "../../../../public/email.png";
 import tres_pontinhos from "../../../../public/tres_pontos_button.png";
 import Image from "next/image";
+import { toast } from "react-toastify";
 
 interface User {
   id: string;
@@ -13,6 +14,13 @@ interface User {
   email: string;
   role: string;
   createdAt?: string;
+}
+
+interface PutedAppointment {
+   status: "CONFIRMED" | "CANCELLED" ,
+  scheduledAt: string;
+  description: string;
+  type: string;
 }
 
 export default function Usuarios() {
@@ -23,8 +31,19 @@ export default function Usuarios() {
 
   // Guarda qual menu está aberto
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
+  const [menuOpenId2, setMenuOpenId2] = useState<string | null>(null);
+
+  const [editId, setEditId] = useState<string | null>(null);
+
+  const [form, setForm] = useState<PutedAppointment>({
+    status: "CONFIRMED",
+    scheduledAt: "",
+    description: "",
+    type: "",
+  });
 
   async function listarUsuarios() {
+    
     try {
       const response = await api.get("/ursersDetails");
       const data = response.data?.data || response.data;
@@ -44,11 +63,11 @@ export default function Usuarios() {
       const response = await api.get("/appointments");
 
       const data = response.data?.data || response.data;
+      if(data.role === "ADMIN"){return null}
 
       const confirmed = data.filter(
         (item: any) => item.status === "CONFIRMED"
       );
-
       setAppointments(confirmed);
     } catch (err) {
       console.log("Erro ao carregar agendamentos", err);
@@ -73,15 +92,16 @@ export default function Usuarios() {
     );
   }
   
+  
 
+  async function AbrirEdicaoDaMarcacao(userId: string) {
+   menuOpenId2 === userId ? setMenuOpenId2(null) : setMenuOpenId2(userId);
+   setEditId(userId);
+   
+  }
   function deletarUsuario(userId: string) {
     alert("Usuário deletado: " + userId);
   }
-
-  function alterarMarcacao(userId: string) {
-    alert("Alterar marcação do usuário: " + userId);
-  }
-
 
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(search.toLowerCase())
@@ -118,7 +138,7 @@ export default function Usuarios() {
       </div>
 
       {/* DESKTOP */}
-      <div className="hidden sm:block overflow-x-auto bg-white rounded-xl shadow mt-10">
+      <div className="hidden sm:block overflow-visible bg-white rounded-xl shadow mt-10">
 
         <table className="w-full text-sm text-left">
 
@@ -204,10 +224,10 @@ Equipa de Fisioterapia`
                     </a>
 
                     {/* 3 PONTOS */}
-                    <button
-                      onClick={() => tresPontinhos(user.id)}
-                      className="cursor-pointer hover:scale-110 transition-all duration-300"
-                    >
+                      <button
+                  onClick={() => tresPontinhos(user.id)}
+                  className="relative z-50 cursor-pointer hover:scale-110 transition-all duration-300"
+                >
                       <Image
                         src={tres_pontinhos}
                         alt="Menu"
@@ -219,24 +239,134 @@ Equipa de Fisioterapia`
 
                     {/* MENU */}
                     {menuOpenId === user.id && (
-                      <div className="absolute right-0 top-12 bg-white border shadow-lg rounded-lg w-48 z-50 overflow-hidden">
-
+                   <div className="absolute right-0 top-12 bg-white border shadow-lg rounded-lg w-48 z-999 overflow-hidden">
+                       
                         <button
-                          onClick={() => alterarMarcacao(user.id)}
+                          onClick={() => AbrirEdicaoDaMarcacao(user.id)}
                           className="w-full text-left px-4 py-3 hover:bg-gray-100 text-sm transition"
                         >
-                          ✏️ Alterar marcação
+                          ✏️ Criar marcação
                         </button>
-
+                          
                         <button
                           onClick={() => deletarUsuario(user.id)}
                           className="w-full text-left px-4 py-3 hover:bg-red-100 text-red-600 text-sm transition"
                         >
-                          🗑️ Deletar usuário
+                          🗑️ Deletar marcação
                         </button>
 
                       </div>
                     )}
+
+                   {menuOpenId2 === user.id && (
+  <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+    
+    <div className="bg-white p-6 rounded-xl w-[90%] max-w-md space-y-3">
+      
+      <h2 className="text-lg font-bold">
+        Criar Marcação de {user.name}
+      </h2>
+
+      <select
+  className="w-full border p-2 rounded"
+  value={form.status}
+  onChange={(e) =>
+    setForm({ ...form, status: e.target.value as any })
+  }
+>
+  <option value="CONFIRMED">CONFIRMED</option>
+  <option value="CANCELLED">CANCELLED</option>
+</select>
+
+      <input
+      type="datetime-local"
+      className="w-full border p-2 rounded"
+      value={form.scheduledAt}
+      onChange={(e) =>
+        setForm({ ...form, scheduledAt: e.target.value })
+      }
+    />
+
+      <input
+        className="w-full border p-2 rounded"
+        placeholder="Description"
+        value={form.description}
+        onChange={(e) =>
+          setForm({ ...form, description: e.target.value })
+        }
+      />
+
+        <select
+  className="w-full border p-2 rounded"
+  value={form.type}
+  onChange={(e) =>
+    setForm({ ...form, type: e.target.value })
+  }
+>
+  <option value="">Selecione o tipo</option>
+  <option value="PILATES">PILATES</option>
+  <option value="ACUPUNTURA">ACUPUNTURA</option>
+  <option value="VENTOSATERAPIA">VENTOSATERAPIA</option>
+</select>
+
+      <div className="flex gap-2 justify-end">
+        <button
+          onClick={() => setMenuOpenId2(null)}
+          className="px-4 py-2 bg-gray-200 rounded"
+        >
+          Cancelar
+        </button>
+
+        <button
+          //enviar form para o backend
+        
+          onClick={async () => {
+  try {
+    if (!editId) return;
+
+    if (!form.status || !form.scheduledAt || !form.type) {
+      toast.error("Preenche todos os campos");
+      return;
+    }
+
+    
+const serviceTypeMap: Record<string, string> = {
+  PILATES: "eab56c8b-7612-4cf1-b5cb-4d507d00617b",
+  ACUPUNTURA: "5ed3dd87-93cd-4f19-9639-378bd2d305aa",
+  VENTOSATERAPIA: "c626ca90-b438-4f59-bcd1-cf8aa16aec9d",
+};
+
+const payload = {
+  description: form.description,
+  scheduledAt: new Date(form.scheduledAt).toISOString(),
+  serviceTypeID: serviceTypeMap[form.type],
+  type: form.type,
+  status: form.status,
+};
+
+
+    console.log("PAYLOAD ENVIADO:", payload);
+
+    await api.post(`/appointments/`, payload);
+
+    toast.success("Atualizado com sucesso!");
+
+    setMenuOpenId2(null);
+  } catch (err: any) {
+    console.log("ERRO BACKEND:", err.response?.data);
+    toast.error("Erro ao atualizar marcação");
+  }
+}}
+
+          className="px-4 py-2 bg-green-500 text-white rounded"
+        >
+          Salvar
+        </button>
+      </div>
+
+    </div>
+  </div>
+)}
 
                   </div>
 

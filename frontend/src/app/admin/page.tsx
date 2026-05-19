@@ -37,15 +37,31 @@ function abrirFecharMes(mes: string) {
 }
 
   async function detalheAdmin() {
-    try {
-      const response = await api.get("/me");
-      setUser(response.data);
-    } catch (err: any) {
-      if (err.response?.status === 401) {
-        logout();
-      }
+  try {
+    const response = await api.get("/me");
+
+    const userData = response.data;
+
+    if (userData.role !== "ADMIN") {
+      logout();
+      router.replace("/login");
+      return;
+    }
+
+    setUser(userData);
+  } catch (err: any) {
+    if (err.response?.status === 401) {
+      logout();
+      router.replace("/login");
     }
   }
+}
+
+useEffect(() => {
+  if (user && user.role !== "ADMIN") {
+    router.replace("/login");
+  }
+}, [user]);
 
   async function detalheGeral() {
     try {
@@ -83,9 +99,7 @@ function abrirFecharMes(mes: string) {
   // Exemplo: [{id: 1, name: "João"}, {id: 2, name: "Maria"}, ...]
 
   useEffect(() => {
-    if (!loading && !isAuthenticated) {
-      router.push("/");
-    }
+    
 
     if (isAuthenticated) {
       detalheAdmin();
