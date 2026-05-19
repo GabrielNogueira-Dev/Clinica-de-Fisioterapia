@@ -36,8 +36,8 @@ router.get("/appointments", isAuthenticated, new ListAppointmentsController().ha
 
 router.get("/appointmentsbyuser", isAuthenticated , new ListAppointmentsByUserController().handle)
 
-router.get("/ursersDetails", isAuthenticated, new DetailAllUserController().handle )
+router.get("/ursersDetails", isAuthenticated, isAdmin, new DetailAllUserController().handle )
 
-router.put("/appointments/:id", isAuthenticated, new PutAppointmentController().handle)
+router.put("/appointments/:id", isAuthenticated, isAdmin, new PutAppointmentController().handle)
 
 export { router }
