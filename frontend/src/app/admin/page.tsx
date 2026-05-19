@@ -182,7 +182,7 @@ const appointmentsByMonth = agruparPorMes(usuarios);
               Clientes sem agendamento <UserRoundMinus size={16} className="sm:w-5 sm:h-5" />
             </h2>
             <p className="text-base sm:text-xl lg:text-2xl font-bold text-[#0F1720]">
-              {usuarios.length - uniqueUsers.length}
+              {usuarios.length - uniqueUsers.length} 
             </p>
           </div>
 
@@ -251,7 +251,7 @@ const appointmentsByMonth = agruparPorMes(usuarios);
                 </thead>
 
                 <tbody className="bg-gray-50">
-                  {agendamentos.map((appt: any) => (
+                  {agendamentos.map((appt: any) => ( 
                     <tr
                       key={appt.id}
                       className="border-t hover:bg-gray-50"

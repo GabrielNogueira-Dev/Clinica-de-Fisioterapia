@@ -60,9 +60,6 @@ export default function AdminSidebar() {
         Usuários
       </Link>
 
-      <Link href="/admin/appointments" className={linkClass("/admin/appointments")}>
-        Agendamentos
-      </Link>
     </nav>
 
     {/* ESPAÇADOR + LOGOUT */}
