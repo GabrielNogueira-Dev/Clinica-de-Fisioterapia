@@ -14,6 +14,7 @@ import { DeleteAppointmentController } from "./controllers/Appointments/DeleteAp
 import { ListAppointmentsController } from "./controllers/Appointments/ListAppointmentsController";
 import { ListAppointmentsByUserController } from "./controllers/Appointments/ListAppointmentsByUserController";
 import { DetailAllUserController } from "./controllers/User/DetailAllUserController";
+import { PutAppointmentController } from "./controllers/Appointments/PutAppointmentController";
 
 const router = Router()
 
@@ -36,5 +37,7 @@ router.get("/appointments", isAuthenticated, new ListAppointmentsController().ha
 router.get("/appointmentsbyuser", isAuthenticated , new ListAppointmentsByUserController().handle)
 
 router.get("/ursersDetails", isAuthenticated, new DetailAllUserController().handle )
+
+router.put("/appointments/:id", isAuthenticated, new PutAppointmentController().handle)
 
 export { router }
