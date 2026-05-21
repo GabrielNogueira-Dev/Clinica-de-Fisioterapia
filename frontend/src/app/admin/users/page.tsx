@@ -7,6 +7,7 @@ import email from "../../../../public/email.png";
 import tres_pontinhos from "../../../../public/tres_pontos_button.png";
 import Image from "next/image";
 import { toast } from "react-toastify";
+import { chamarMarcacao, deletarMarcacao } from "./changeandDelete";
 
 interface User {
   id: string;
@@ -22,6 +23,7 @@ interface PutedAppointment {
   description: string;
   type: string;
 }
+
 
 export default function Usuarios() {
   const [users, setUsers] = useState<User[]>([]);
@@ -41,6 +43,12 @@ export default function Usuarios() {
     description: "",
     type: "",
   });
+
+    //Abre todas as marcacoes antes de excluir na pasta do usuarioADMIN
+  const [selectedMarcacoes,setSelectedMarcacoes] = useState<any[]>([])
+  const [openModal,setOpenModal] = useState(false)
+
+const [selectedUser,setSelectedUser] = useState< User | null >(null)
 
   async function listarUsuarios() {
     
@@ -99,9 +107,16 @@ export default function Usuarios() {
    setEditId(userId);
    
   }
-  function deletarUsuario(userId: string) {
-    alert("Usuário deletado: " + userId);
+
+    //abre as marcacoes ao clicar no botao excluir pra depois escolher qual marcacao quer excluir
+  async function handleOpenMarcacoes(userId:User){
+    setSelectedUser(userId)
+    setOpenModal(true)
+  setSelectedMarcacoes([]) // limpa antes
+    const marcacoes = await chamarMarcacao(userId.id) 
+  setSelectedMarcacoes(marcacoes)
   }
+
 
   const filteredUsers = users.filter((user) =>
     user.name.toLowerCase().includes(search.toLowerCase())
@@ -114,6 +129,8 @@ export default function Usuarios() {
       </p>
     );
   }
+
+    const marcacoesConfirmadas = selectedMarcacoes.filter((marcacoes) => marcacoes.status === "CONFIRMED")
 
   return (
     <div className="w-full p-4 sm:p-10 lg:p-15">
@@ -239,7 +256,7 @@ Equipa de Fisioterapia`
 
                     {/* MENU */}
                     {menuOpenId === user.id && (
-                   <div className="absolute right-0 top-12 bg-white border shadow-lg rounded-lg w-48 z-999 overflow-hidden">
+                   <div className="absolute right-0 top-12 bg-white border shadow-lg rounded-lg w-48 z-998 overflow-hidden">
                        
                         <button
                           onClick={() => AbrirEdicaoDaMarcacao(user.id)}
@@ -249,7 +266,7 @@ Equipa de Fisioterapia`
                         </button>
                           
                         <button
-                          onClick={() => deletarUsuario(user.id)}
+                          onClick={() => handleOpenMarcacoes(user) }
                           className="w-full text-left px-4 py-3 hover:bg-red-100 text-red-600 text-sm transition"
                         >
                           🗑️ Deletar marcação
@@ -257,6 +274,82 @@ Equipa de Fisioterapia`
 
                       </div>
                     )}
+
+                    {openModal && (
+  <div className="fixed  inset-0 bg-[#E6F7EF] backdrop-blur-sm flex items-center justify-center z-999">
+    
+    <div className="bg-white p-6 rounded-xl w-[90%] max-w-md  shadow-xl">
+      
+      <h2 className="flex gap-2 text-lg font-bold mb-4 ">
+        Marcações do utilizador <p className="bg-[#2BAE66] rounded-md text-white text-sm capitalize p-1.5">{selectedUser?.name}</p>
+      </h2>
+
+     {marcacoesConfirmadas.length === 0 ? (
+  <p className="text-center text-gray-500 py-10">
+    Sem marcações encontradas
+  </p>
+) : (
+  <div className="space-y-3 max-h-[60vh] overflow-y-auto pr-1 pb-1">
+    {marcacoesConfirmadas.map((marcacao) => (
+      <div
+        key={marcacao.id}
+        className="flex items-center justify-between gap-4 p-4 rounded-2xl border border-[#2BAE66]/20 bg-white shadow-sm hover:shadow-md transition"
+      >
+        {/* LEFT */}
+        <div className="flex items-center gap-3 min-w-0">
+          
+          {/* ICON */}
+          <div className="w-10 h-10 rounded-xl bg-[#2BAE66]/10 flex items-center justify-center text-[#2BAE66] font-bold shrink-0">
+            {marcacao.service?.slice(0, 1) || "M"}
+          </div>
+
+          {/* TEXT */}
+          <div className="flex flex-col min-w-0">
+            <p className="font-semibold text-gray-800 truncate">
+              {marcacao.service}
+            </p>
+
+            <p className="text-sm text-gray-500 whitespace-nowrap">
+              {new Date(marcacao.scheduledAt).toLocaleString("pt-PT", {
+                dateStyle: "medium",
+                timeStyle: "short",
+              })}
+            </p>
+          </div>
+        </div>
+
+        {/* RIGHT */}
+        <div className="flex items-center gap-3 shrink-0">
+          
+          <span className="text-xs px-3 py-1 rounded-full bg-[#2BAE66]/10 text-[#2BAE66] font-medium">
+            agendada
+          </span>
+
+          <button
+            onClick={ async () => {await deletarMarcacao(marcacao.id)
+            setOpenModal(false)
+            }
+              
+            }
+            className=" cursor-pointer p-1.5 rounded-xl bg-red-50 text-red-500 hover:bg-red-100 hover:scale-105 active:scale-95 transition"
+          >
+            🗑️
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+)}
+
+        <button
+        onClick={() => setOpenModal(false)}
+        className=" mt-4 bg-gray-500 text-white  font-semibold px-4 py-2 rounded hover:bg-gray-400 cursor-pointer"
+      > Fechar
+      </button>
+
+    </div>
+  </div>
+)}
 
                    {menuOpenId2 === user.id && (
   <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">

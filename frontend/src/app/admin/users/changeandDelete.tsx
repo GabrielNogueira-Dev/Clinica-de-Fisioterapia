@@ -1,9 +1,19 @@
-import { api } from "@/services/api";
+"use client";
 
-// ALTERAR MARCAÇÃO
-export async function alterarMarcacao(appointmentId: string, data: any) {
+import { api } from "@/services/api";
+import { toast } from "react-toastify";
+
+// ALTERAR
+export async function alterarMarcacao(
+  appointmentId: string,
+  data: any
+) {
   try {
-    const response = await api.put(`/appointments/${appointmentId}`, data);
+    const response = await api.put(
+      `/appointments/${appointmentId}`,
+      data
+    );
+
     return response.data;
   } catch (err) {
     console.log("Erro ao atualizar marcação", err);
@@ -11,13 +21,49 @@ export async function alterarMarcacao(appointmentId: string, data: any) {
   }
 }
 
-// DELETAR MARCAÇÃO
-export async function deletarMarcacao(appointmentId: string) {
+// BUSCAR
+export async function chamarMarcacao(userId: string) {
+
   try {
-    const response = await api.delete(`/appointments/${appointmentId}`);
-    return response.data;
+
+    const response = await api.get("/ursersDetails");
+
+    // users vêm dentro de data
+    const users = response.data.data;
+
+    // procura user
+    const usuario = users.find(
+      (item: any) => item.id === userId
+    );
+
+    // se não existir
+    if (!usuario) {
+      toast.error("Usuário não encontrado");
+      return [];
+    }
+
+    console.log("Marcações:", usuario.appointments);
+
+    return usuario.appointments;
+
   } catch (err) {
-    console.log("Erro ao deletar marcação", err);
-    throw err;
+
+    toast.error("Erro ao carregar seus agendamentos");
+
+    console.error(err);
+
+    return [];
+  }
+}
+
+// DELETAR
+export async function deletarMarcacao( appointmentId: string) {
+  try {
+    await api.delete(`/appointments/${appointmentId}`);
+    toast.success("Agendamento cancelado");
+    
+  } catch (err) {
+    toast.error("Erro ao tentar deletar marcação");
+    console.log(err);
   }
 }
