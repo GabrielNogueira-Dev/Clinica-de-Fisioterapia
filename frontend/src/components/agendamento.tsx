@@ -32,7 +32,8 @@ const router = useRouter();
  const serviceTypeIds = {
   VENTOSATERAPIA: "c626ca90-b438-4f59-bcd1-cf8aa16aec9d",
   ACUPUNTURA: "5ed3dd87-93cd-4f19-9639-378bd2d305aa",
-  PILATES: "eab56c8b-7612-4cf1-b5cb-4d507d00617b",
+  PILATES: "eab56c8b-7612-4cf1-b5cb-4d507d00617b", //fisioterapia
+  FISIOTERAPIA: "e7d81ac8-0a59-4a54-97db-db8fd9a2aeec"
 };
 
   async function handleConfirmar() {
@@ -238,4 +239,5 @@ const dateTime = new Date(
       </section>
     </div>
   );
+  
 }

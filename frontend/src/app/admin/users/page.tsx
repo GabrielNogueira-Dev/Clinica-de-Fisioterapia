@@ -102,11 +102,10 @@ const [selectedUser,setSelectedUser] = useState< User | null >(null)
   
   
 
-  async function AbrirEdicaoDaMarcacao(userId: string) {
-   menuOpenId2 === userId ? setMenuOpenId2(null) : setMenuOpenId2(userId);
-   setEditId(userId);
-   
-  }
+ async function AbrirEdicaoDaMarcacao(user: User) {
+  setSelectedUser(user);
+  setMenuOpenId2(user.id);
+}
 
     //abre as marcacoes ao clicar no botao excluir pra depois escolher qual marcacao quer excluir
   async function handleOpenMarcacoes(userId:User){
@@ -161,10 +160,9 @@ const [selectedUser,setSelectedUser] = useState< User | null >(null)
 
           <thead className="bg-[#E6F7EF] text-gray-600">
             <tr>
-              <th className="p-3">Nome</th>
-              <th className="p-3">Email</th>
+              <th className="p-3">Usuário</th>
               <th className="p-3">Função</th>
-              <th className="p-3">Data de entrada</th>
+              <th className="p-3">Data de cadastro</th>
               <th className="p-3">Status</th>
               <th className="p-3">Ações</th>
             </tr>
@@ -177,19 +175,16 @@ const [selectedUser,setSelectedUser] = useState< User | null >(null)
                 className="border-t hover:bg-gray-100 transition"
               >
 
-                <td className="p-3 font-medium text-[#0F1720]">
-                  {user.name}
+                <td className="flex flex-col p-3 ">
+                  <p className="text-black capitalize font-bold">{user.name}</p> <p className="font-sm text-gray-400 ">{user.email}</p>
                 </td>
 
-                <td className="p-3 text-gray-600">
-                  {user.email}
-                </td>
+                <td>
+ <span className={`inline-flex items-center px-2 py-1 rounded-md text-xs font-semibold ${user.role === "ADMIN" ? "bg-green-100 text-green-700 "
+        : "bg-gray-100 text-gray-600"}`} > {user.role === "ADMIN" ? "Administrador" : "Paciente"}
+  </span>
+</td>
 
-                <td className="p-3 text-gray-600">
-                  {user.role === "ADMIN"
-                    ? "Administrador"
-                    : "Paciente"}
-                </td>
 
                 <td className="p-3 text-gray-600">
                   {user.createdAt
@@ -199,13 +194,18 @@ const [selectedUser,setSelectedUser] = useState< User | null >(null)
 
                 <td className="p-3">
                   {userTemAgendamento(user.id) ? (
-                    <span className="px-2 py-1 rounded text-xs font-semibold bg-green-100 text-green-700">
-                      Ativo
-                    </span>
+                 <div className="inline-flex items-center px-2 py-1 gap-2 rounded text-xs font-bold bg-green-100 text-green-700">
+                    <p className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></p>
+                    <span>Ativo</span>
+                 </div>
+
                   ) : (
-                    <span className="px-2 py-1 rounded text-xs font-semibold bg-red-100 text-red-700">
+                    <div className="inline-flex items-center px-2 py-1 gap-2 rounded text-xs font-bold bg-green-100 text-red-700">
+                    <p className="w-2 h-2 rounded-full bg-red-500 animate-pulse"></p>
+                      <span>
                       Inativo
                     </span>
+                  </div>
                   )}
                 </td>
 
@@ -259,7 +259,7 @@ Equipa de Fisioterapia`
                    <div className="absolute right-0 top-12 bg-white border shadow-lg rounded-lg w-48 z-998 overflow-hidden">
                        
                         <button
-                          onClick={() => AbrirEdicaoDaMarcacao(user.id)}
+                          onClick={() => AbrirEdicaoDaMarcacao(user)}
                           className="w-full text-left px-4 py-3 hover:bg-gray-100 text-sm transition"
                         >
                           ✏️ Criar marcação
@@ -415,39 +415,43 @@ Equipa de Fisioterapia`
         
           onClick={async () => {
   try {
-    if (!editId) return;
+    if (!selectedUser?.id) {
+      toast.error("Seleciona um utilizador");
+      return;
+    }
 
     if (!form.status || !form.scheduledAt || !form.type) {
       toast.error("Preenche todos os campos");
       return;
     }
 
-    
-const serviceTypeMap: Record<string, string> = {
-  PILATES: "eab56c8b-7612-4cf1-b5cb-4d507d00617b",
-  ACUPUNTURA: "5ed3dd87-93cd-4f19-9639-378bd2d305aa",
-  VENTOSATERAPIA: "c626ca90-b438-4f59-bcd1-cf8aa16aec9d",
-};
+    const serviceTypeMap: Record<string, string> = {
+      PILATES: "eab56c8b-7612-4cf1-b5cb-4d507d00617b",
+      ACUPUNTURA: "5ed3dd87-93cd-4f19-9639-378bd2d305aa",
+      VENTOSATERAPIA: "c626ca90-b438-4f59-bcd1-cf8aa16aec9d",
+      FISIOTERAPIA: "e7d81ac8-0a59-4a54-97db-db8fd9a2aeec",
+    };
 
-const payload = {
-  description: form.description,
-  scheduledAt: new Date(form.scheduledAt).toISOString(),
-  serviceTypeID: serviceTypeMap[form.type],
-  type: form.type,
-  status: form.status,
-};
-
+    const payload = {
+      userId: selectedUser.id, 
+      description: form.description,
+      scheduledAt: new Date(form.scheduledAt).toISOString(),
+      serviceTypeID: serviceTypeMap[form.type],
+      type: form.type,
+      status: form.status,
+    };
 
     console.log("PAYLOAD ENVIADO:", payload);
 
-    await api.post(`/appointments/`, payload);
+    await api.post("/appointments", payload);
 
-    toast.success("Atualizado com sucesso!");
+    toast.success("Marcação criada com sucesso!");
 
     setMenuOpenId2(null);
+    setSelectedUser(null);
   } catch (err: any) {
     console.log("ERRO BACKEND:", err.response?.data);
-    toast.error("Erro ao atualizar marcação");
+    toast.error("Erro ao criar marcação");
   }
 }}
 

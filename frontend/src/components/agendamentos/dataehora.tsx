@@ -44,21 +44,18 @@ export default function DataHora({ setDataSelecionada, setHorarioSelecionado }: 
     const lista = resposta.data.data
 
     const horarios: string[] = lista.flatMap((item: any) =>
-      item.user?.appointments?.map((agendamento: any) => {
-        if (!agendamento?.scheduledAt) return null
-
-        const date = new Date(agendamento.scheduledAt)
-
-        // data no formato YYYY-MM-DD (LOCAL)
-        const data = date.toLocaleDateString("sv-SE")
-        // hora no formato HH:mm (LOCAL)
-        const hora = date.toTimeString().slice(0, 5)
-
-        return `${data} ${hora}`
-      }) || []
-    ).filter(Boolean)
+  item.user?.appointments
+    ?.filter((agendamento: any) => agendamento.status !== "CANCELLED")
+    .map((agendamento: any) => {
+      const date = new Date(agendamento.scheduledAt)
+      const data = date.toLocaleDateString("sv-SE")
+      const hora = date.toTimeString().slice(0, 5)
+      return `${data} ${hora}`
+    }) || []
+).filter(Boolean)
 
     setAgendamentosOcupados(horarios)
+    
   } catch {
     toast.error("Erro ao carregar agendamentos/dataehora")
   }

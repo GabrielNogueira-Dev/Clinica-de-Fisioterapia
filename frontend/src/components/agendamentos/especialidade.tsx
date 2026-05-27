@@ -36,19 +36,19 @@ export default function Especialidade({ setEspecialidade }: EspecialidadeProps) 
         {/* PILATES */}
         <nav
           className={`${baseCard} ${
-            cardSelected === "PILATES"
+            cardSelected === "FISIOTERAPIA"
               ? "scale-105 border-[#2BAE66] bg-[#F2FBF6]"
               : "border-[#6B7280]/20 hover:scale-105"
           }`}
-          onClick={() => escolher("PILATES")}
+          onClick={() => escolher("FISIOTERAPIA")}
         >
           <Image
-            src={pilates}
+            src={pilates} 
             alt="pilates icon"
             className="bg-[#2BAE66] rounded-full w-16 h-16 p-3 mb-5"
             priority
           />
-          <span className="font-bold text-[#0F1720]">Pilates</span>
+          <span className="font-bold text-[#0F1720]">Fisioterapia</span>
           <p className="mt-1 text-[#6B7280] text-sm">
             Sessão focada em postura e flexibilidade motora do paciente.
           </p>

@@ -36,7 +36,7 @@ export default function RootLayout({
     
     <html
       lang="pt-BR" data-scroll-behavior="smooth"
-      className={cn("h-full", "antialiased", "max-w-screen-2xl", "mx-auto", inter.className, "font-sans", geist.variable, playfair.className)}
+      className={cn("h-full", "antialiased", "max-w-screen-3xl", "mx-auto", inter.className, "font-sans", geist.variable, playfair.className)}
     >
       <body className="w-full min-h-full flex flex-col">
         <Header/>
