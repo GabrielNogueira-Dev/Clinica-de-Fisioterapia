@@ -197,7 +197,7 @@ carregarAgendamentos()
         <div className="flex justify-between items-center">
           <span className="font-semibold text-gray-700">18:00</span>
           <span className="text-xs bg-[#E6F7EF] text-[#2BAE66] px-2 py-1 rounded-md">
-             {vagas.filter((vaga) => !vagaOcupada("Terça-feira", "18:00",vaga)).length}
+             {vagas.filter((vaga) => !vagaOcupada("Sexta-feira", "18:00",vaga)).length}
            {""} Vagas disponíveis
           </span>
         <div className="flex">
@@ -213,7 +213,7 @@ carregarAgendamentos()
         <div className="flex justify-between items-center">
           <span className="font-semibold text-gray-700">19:00</span>
           <span className="text-xs bg-[#E6F7EF] text-[#2BAE66] px-2 py-1 rounded-md">
-             {vagas.filter((vaga) => !vagaOcupada("Terça-feira", "18:00",vaga)).length}
+             {vagas.filter((vaga) => !vagaOcupada("Sexta-feira", "18:00",vaga)).length}
            {""} Vagas disponíveis
           </span>
         <div className="flex">
@@ -231,7 +231,7 @@ carregarAgendamentos()
         <div className="flex justify-between items-center">
           <span className="font-semibold text-gray-700">20:00</span>
           <span className="text-xs bg-[#E6F7EF] text-[#2BAE66] px-2 py-1 rounded-md">
-             {vagas.filter((vaga) => !vagaOcupada("Terça-feira", "18:00",vaga)).length}
+             {vagas.filter((vaga) => !vagaOcupada("Sexta-feira", "18:00",vaga)).length}
            {""} Vagas disponíveis
           </span>
         <div className="flex gap-2">
