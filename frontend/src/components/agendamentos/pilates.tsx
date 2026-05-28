@@ -119,31 +119,53 @@ export default function MarcacaoPilatesLayout() {
       </section>
 
       {/* FOTO DRA MANTIDA */}
-      <section className="flex w-full justify-center mt-10">
-        <div className="bg-white shadow-lg border border-gray-200 rounded-xl p-6 max-w-3xl w-full flex flex-col md:flex-row items-center md:items-start gap-6">
+     
+    <section className="flex w-full justify-center mt-10">
+  <div className="bg-white shadow-lg border border-gray-200 rounded-xl p-6 max-w-3xl w-full flex flex-col md:flex-row items-center md:items-start gap-6">
 
-          <div className="flex justify-center md:justify-start w-full md:w-auto">
-            <Image
-              src={gil}
-              alt="Dra. Gilmara Farias"
-              width={90}
-              height={90}
-              className="rounded-full object-cover w-24 h-24 shadow-md hover:scale-110 transition"
-            />
-          </div>
+    {/* FOTO */}
+    <div className="flex justify-center md:justify-start w-full md:w-auto">
+      <Image
+        src={gil}
+        alt="Dra. Gilmara Farias"
+        width={90}
+        height={90}
+        className="rounded-full object-cover w-24 h-24 shadow-md hover:scale-110 transition"
+      />
+    </div>
 
-          <div className="flex flex-col gap-2 text-center md:text-left">
-            <h1 className="text-xl font-bold text-[#0F1720]">
-              Dra. Gilmara Farias
-            </h1>
+    {/* INFORMAÇÕES */}
+    <div className="flex flex-col gap-2 text-center md:text-left">
 
-            <p className="text-gray-600 text-sm">
-              Fisioterapeuta — Clínica Olhar de Fisio
-            </p>
-          </div>
+      <h1 className="text-xl font-bold text-[#0F1720]">
+        Dra. Gilmara Farias
+      </h1>
 
-        </div>
-      </section>
+      <p className="text-gray-600 text-sm">
+        Fisioterapeuta — Clínica Olhar de Fisio
+      </p>
+
+      {/* BADGES */}
+      <div className="flex flex-wrap gap-2 mt-1 justify-center md:justify-start">
+
+        <span className="bg-[#E6F7EF] text-[#2BAE66] text-xs font-medium px-2 py-1 rounded-md">
+          <span className="font-bold">CREFITO</span> Ativo
+        </span>
+
+        <span className="bg-[#E6F7EF] text-[#2BAE66] text-xs font-medium px-2 py-1 rounded-md">
+          +5 anos de experiência
+        </span>
+
+        <span className="bg-[#E6F7EF] text-[#2BAE66] text-xs font-medium px-2 py-1 rounded-md">
+          Fisioterapeuta e Pilates Clínico
+        </span>
+
+      </div>
+
+    </div>
+
+  </div>
+</section>
 
       <p className="flex justify-center items-center font-bold text-gray-500 mt-10 outline-1 rounded-md p-1.5 shadow bg-white mx-auto animate-bounce transition-shadow duration-700">
         Marcação da semana
