@@ -1,6 +1,6 @@
 "use client";
 
-import logo from "../../public/Background.png";
+import logo from "../../public/favicon.ico";
 import Image from "next/image";
 import { useState, useEffect } from "react";
 import { useAuth, logout } from "@/services/auth";
@@ -59,7 +59,7 @@ export default function Header() {
         {/* LOGO */}
         <div className="flex items-center gap-1">
           <a href="/" className="flex items-center gap-1">
-            <Image src={logo} alt="logo" width={28} height={28} />
+            <Image src={logo} alt="logo" width={28} height={28} className="rounded-full object-cover"/>
 
             <h1 className="font-bold text-[#0F1720] italic font-serif tracking-wide">
               Olhar <span className="text-[#141b24]">de Fisio</span>

@@ -1,5 +1,5 @@
 "use client"
-import clinica from '../../public/Fisioterapia.png';
+import clinica from '../../public/StudioImage.png';
 import Image from 'next/image';
 import { FaWhatsapp } from "react-icons/fa";
 import { useRouter } from 'next/navigation';
