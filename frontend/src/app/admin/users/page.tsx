@@ -35,8 +35,6 @@ export default function Usuarios() {
   const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
   const [menuOpenId2, setMenuOpenId2] = useState<string | null>(null);
 
-  const [editId, setEditId] = useState<string | null>(null);
-
   const [form, setForm] = useState<PutedAppointment>({
     status: "CONFIRMED",
     scheduledAt: "",

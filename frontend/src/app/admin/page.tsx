@@ -21,6 +21,7 @@ export interface User {
 }
 
 export default function Admin() {
+  const [openAllAppointments, setOpenAllAppointments] = useState(false);
   const { isAuthenticated, loading } = useAuth();
   const router = useRouter();
 
@@ -111,11 +112,13 @@ useEffect(() => {
   if (loading) return <p>Carregando...</p>;
 
   function agruparPorMes(usuarios: any[]) {
-    
+    //TODOS OS CONFIRMADOS 
   const meses: Record<string, any[]> = {};// Agrupa os agendamentos por mês ex: abril 2026": [...],
 
   usuarios.forEach((user) => {
-    user.appointments.forEach((appt: any) => {
+    user.appointments
+    ?.filter((appt : any) => appt.status === "CONFIRMED")
+    .forEach((appt: any) => {
       const data = new Date(appt.scheduledAt);
 
       const chaveMes = data.toLocaleDateString("pt-PT", {
@@ -140,7 +143,38 @@ useEffect(() => {
 // Guarda os agendamentos agrupados por mês para exibir 
 const appointmentsByMonth = agruparPorMes(usuarios);
 
+ function agruparPorMesAll(usuarios: any[]) {
+  //TODOS OS MESES, INCLUSIVE CANCELADOS E PENDENTES
 
+  const meses: Record<string, any[]> = {};// Agrupa os agendamentos por mês ex: abril 2026": [...],
+
+  usuarios.forEach((user) => {
+    user.appointments
+    ?.filter((appt: any) => appt.status !== "CONFIRMED")
+    .forEach((appt: any) => {
+      const data = new Date(appt.scheduledAt);
+
+      const chaveMes = data.toLocaleDateString("pt-PT", {
+        month: "long",
+        year: "numeric",
+      }); //transforma a data em uma string do tipo "abril 2026"
+
+      if (!meses[chaveMes]) {
+        meses[chaveMes] = [];
+      } // se ainda não existe "maio 2026", cria Exemplo: meses["maio de 2026"] = [];
+
+      meses[chaveMes].push({
+        ...appt,
+        userName: user.name,
+        userEmail: user.email
+      });
+    }); // retorna um array de agendamentos com o nome do usuário Exemplo: [{id: 1, scheduledAt: "2026-05-10T14:00:00Z", userName: "João"}, ...]
+  });
+
+  return meses;
+}
+
+ const appointmentsByMonthALL = agruparPorMesAll(usuarios);
 
   return (
     <div className="w-full p-4 sm:p-10 lg:p-15">
@@ -218,15 +252,16 @@ const appointmentsByMonth = agruparPorMes(usuarios);
         <p>Carregando dados do usuário...</p>
       )}
       
-{/* LISTA DE AGENDAMENTOS */}
+{/* LISTA DE AGENDAMENTOS CONFIRMADOS*/}
 <div className="mt-10">
   <h1 className="text-black text-lg font-bold mb-4">
-    Lista de Agendamentos
+    Lista de Agendamentos Confirmados
   </h1>
 
   {Object.entries(appointmentsByMonth).map(
     ([mes, agendamentos]: any) => (
-      <div key={mes} className="mb-10">
+     
+     <div key={mes} className="mb-10">
 
         {/* HEADER DO MÊS */}
         <button
@@ -263,7 +298,7 @@ const appointmentsByMonth = agruparPorMes(usuarios);
                     <th className="p-3">Status</th>
                   </tr>
                 </thead>
-
+                  
                 <tbody className="bg-gray-50">
                   {agendamentos.map((appt: any) => ( 
                     <tr
@@ -376,7 +411,165 @@ const appointmentsByMonth = agruparPorMes(usuarios);
   )}
 </div>
 
+  <button className="flex justify-center items-center cursor-pointer text-black text-lg font-bold mb-4" onClick={() => setOpenAllAppointments(prev => !prev)}> 
+   Lista de Agendamentos Cancelados
+  </button>
+
+  {openAllAppointments && Object.entries(appointmentsByMonthALL).map(
+    ([mes, agendamentos]: any) => (
+      
+        <div key={mes} className="mb-10">
+
+        {/* HEADER DO MÊS */}
+        <button
+          onClick={() => abrirFecharMes(mes)}
+          className="cursor-pointer w-full flex items-center gap-3 bg-gray-100 px-4 py-3 rounded-lg mb-3 hover:bg-gray-200 transition"
+        >
+
+               <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+
+
+          <h2 className="first-letter:uppercase text-md font-bold text-black">
+            {mes}
+          </h2>
+
+          <span className="text-sm text-gray-500">
+            {mesAberto === mes ? "❎" : "✅"}
+          </span>
+        </button>
+
+        {/* CONTEÚDO DO MÊS */}
+        {mesAberto === mes && (
+          <>
+
+            {/* DESKTOP TABLE */}
+            <div className="hidden sm:block overflow-x-auto bg-white rounded-xl shadow">
+              <table className="w-full text-sm text-left">
+
+                <thead className="bg-[#E6F7EF] text-gray-600">
+                  <tr className="text-[#6B7280]">
+                    <th className="p-3">Paciente</th>
+                    <th className="p-3">Email</th>
+                    <th className="p-3">Especialidade</th>
+                    <th className="p-3">Data e Hora</th>
+                    <th className="p-3">Status</th>
+                  </tr>
+                </thead>
+                  
+                <tbody className="bg-gray-50">
+                  {agendamentos.map((appt: any) => ( 
+                    <tr
+                      key={appt.id}
+                      className="border-t hover:bg-gray-50"
+                    >
+
+                      <td className="p-3 capitalize font-medium text-[#0F1720]">
+                        {appt.userName}
+                      </td>
+
+                      <td className="p-3 capitalize font-medium text-[#0F1720]">
+                        {appt.userEmail}
+                      </td>
+
+                      <td className="p-3 text-gray-600">
+                        {appt.serviceType?.name}
+                      </td>
+
+                      <td className="p-3 text-gray-600">
+                        {new Date(
+                          appt.scheduledAt
+                        ).toLocaleDateString("pt-PT")}{" "}
+                        às{" "}
+                        {new Date(
+                          appt.scheduledAt
+                        ).toLocaleTimeString("pt-PT", {
+                          hour: "2-digit",
+                          minute: "2-digit",
+                        })}
+                      </td>
+
+                      <td className="p-3">
+                        <span
+                          className={`px-2 py-1 rounded text-xs font-semibold ${
+                            appt.status === "CONFIRMED"
+                              ? "bg-green-100 text-green-700"
+                              : appt.status === "CANCELLED"
+                              ? "bg-red-100 text-red-700"
+                              : "bg-yellow-100 text-yellow-700"
+                          }`}
+                        >
+                          {appt.status}
+                        </span>
+                      </td>
+
+                    </tr>
+                  ))}
+                </tbody>
+
+              </table>
+            </div>
+
+            {/* MOBILE CARDS */}
+            <div className="sm:hidden flex flex-col gap-4">
+
+              {agendamentos.map((appt: any) => (
+                <div
+                  key={appt.id}
+                  className="bg-white shadow rounded-xl p-4 border"
+                >
+
+                  <p className="font-semibold text-[#0F1720]">
+                   Paciente: {appt.userName}
+                  </p>
+
+                    <p className="font-semibold text-[#0F1720]">
+                    Email: {appt.userEmail}
+                  </p>
+
+                  <p className="text-sm text-gray-600 mt-1">
+                   <span className="text-black font-semibold">Serviço:</span> {appt.serviceType?.name}
+                  </p>
+
+                  <p className="text-sm text-gray-500 mt-1">
+                   <span className="text-black font-semibold">Horário: </span>{new Date(
+                      appt.scheduledAt
+                    ).toLocaleDateString("pt-PT")}{" "}
+                    às{" "}
+                    {new Date(
+                      appt.scheduledAt
+                    ).toLocaleTimeString("pt-PT", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </p>
+
+                  <span
+                    className={`inline-block mt-2 px-3 py-1 rounded-md text-xs font-semibold ${
+                      appt.status === "CONFIRMED"
+                        ? "bg-green-100 text-green-700"
+                        : appt.status === "CANCELLED"
+                        ? "bg-red-100 text-red-700"
+                        : "bg-yellow-100 text-yellow-700"
+                    }`}
+                  >
+                    {appt.status}
+                  </span>
+
+                </div>
+              ))}
+
+            </div>
+
+          </>
+        )}
+
+      </div>
+
+    )
+    )}
+
 </div>
+
 
   );
 }

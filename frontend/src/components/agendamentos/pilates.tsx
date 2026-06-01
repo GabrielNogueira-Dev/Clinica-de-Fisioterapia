@@ -148,8 +148,8 @@ export default function MarcacaoPilatesLayout() {
       {/* BADGES */}
       <div className="flex flex-wrap gap-2 mt-1 justify-center md:justify-start">
 
-        <span className="bg-[#E6F7EF] text-[#2BAE66] text-xs font-medium px-2 py-1 rounded-md">
-          <span className="font-bold">CREFITO</span> Ativo
+        <span className="bg-[#E6F7EF] text-xs text-[#2BAE66] font-medium px-2 py-1 rounded-md">
+          <span className="font-bold text-[#278f56]">CREFITO</span> Ativo
         </span>
 
         <span className="bg-[#E6F7EF] text-[#2BAE66] text-xs font-medium px-2 py-1 rounded-md">
